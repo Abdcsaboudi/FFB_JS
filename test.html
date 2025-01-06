@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+            background-color: #f4f4f4;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        .modal-content {
+            position: relative;
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            width: 70%;
+            max-width: 500px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+        .close:hover {
+            color: #000;
+        }
+        .upload-area {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            border-radius: 4px;
+            background-color: #fafafa;
+        }
+        .upload-area.dragover {
+            background-color: #e1f5fe;
+            border-color: #0d6efd;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0b5ed7;
+        }
+        button.secondary {
+            background-color: #6c757d;
+        }
+        button.secondary:hover {
+            background-color: #5a6268;
+        }
+        #fileInput {
+            display: none;
+        }
+        textarea {
+            width: 100%;
+            height: 300px;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+        }
+    </style>
+</head>
+<body>
+    <h1>Form Test Page</h1>
+    
+    <!-- Upload Modal -->
+    <div id="uploadModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Upload JSON File</h2>
+            <div class="upload-area" id="dropZone" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+                <p>Drag and drop your JSON file here</p>
+                <p>or</p>
+                <button onclick="document.getElementById('fileInput').click()">Choose File</button>
+                <input type="file" id="fileInput" accept=".json" onchange="handleFileSelect(event)">
+            </div>
+        </div>
+    </div>
+
+    <div class="button-group">
+        <button onclick="showUploadModal()">Upload JSON File</button>
+        <button class="secondary" onclick="loadDefaultJson()">Load Default JSON</button>
+    </div>
+
+    <textarea id="jsonInput" placeholder="JSON data will appear here..."></textarea>
+    <button onclick="loadForm()">Load Form</button>
+
+    <script>
+        // Show upload modal
+        function showUploadModal() {
+            document.getElementById('uploadModal').style.display = 'block';
+        }
+
+        // Close upload modal
+        function closeModal() {
+            document.getElementById('uploadModal').style.display = 'none';
+        }
+
+        // Handle drag and drop events
+        function handleDragOver(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            event.target.classList.add('dragover');
+        }
+
+        function handleDragLeave(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            event.target.classList.remove('dragover');
+        }
+
+        function handleDrop(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            event.target.classList.remove('dragover');
+            
+            const files = event.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        }
+
+        // Handle file selection
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                handleFile(file);
+            }
+        }
+
+        // Process the selected file
+        function handleFile(file) {
+            if (file.type !== 'application/json' && !file.name.endsWith('.json')) {
+                alert('Please upload a JSON file');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    // Validate JSON
+                    JSON.parse(e.target.result);
+                    document.getElementById('jsonInput').value = e.target.result;
+                    closeModal();
+                } catch (error) {
+                    alert('Invalid JSON file. Please check the file content.');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // Load default JSON
+        function loadDefaultJson() {
+            fetch('input1.json')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('jsonInput').value = data;
+                })
+                .catch(error => {
+                    console.error('Error loading JSON:', error);
+                    alert('Error loading default JSON file');
+                });
+        }
+
+        // Load form with current JSON data
+        function loadForm() {
+            const jsonData = document.getElementById('jsonInput').value;
+            try {
+                // Parse the JSON to validate it
+                JSON.parse(jsonData);
+                // Encode the JSON data for URL
+                const encodedData = encodeURIComponent(jsonData);
+                // Open the form in a new window/tab
+                window.open(`index.html?formData=${encodedData}`, '_blank');
+            } catch (e) {
+                alert('Invalid JSON data. Please check your input.');
+                console.error('JSON parse error:', e);
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('uploadModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dynamic Form Application">
+    <meta name="theme-color" content="#ffffff">
+    <title>New Event</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="breadcrumb">
+        <a href="#"><img src="home-icon.svg" alt="Home" /></a>
+        <span class="separator">›</span>
+        <a href="#">Tools & Applications</a>
+        <span class="separator">›</span>
+        <a href="#">Zain Hall Booking</a>
+        <span class="separator">›</span>
+        <span class="current">Book Event</span>
+    </nav>
+
+    <div class="container">
+        <div class="content">
+            <h1 class="page-title">New Event</h1>
+            <div id="content">
+                <!-- Dynamic content will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="validation.js"></script>
+    <script src="ruleEngine.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Function to get URL parameters
+        function getJsonFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            const jsonData = params.get('formData');
+            if (jsonData) {
+                try {
+                    return JSON.parse(decodeURIComponent(jsonData));
+                } catch (e) {
+                    console.error('Error parsing JSON data:', e);
+                    return null;
+                }
+            }
+            return null;
+        }
+
+        // Initialize form with the JSON data from URL parameter
+        document.addEventListener('DOMContentLoaded', () => {
+            const formData = getJsonFromUrl();
+            if (formData) {
+                createFormFromJSON(formData);
+            } else {
+                document.getElementById('content').innerHTML = '<p class="error">No form data provided. Please include form data as a URL parameter.</p>';
+            }
+        });
+    </script>
+</body>
+</html> 

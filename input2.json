@@ -1,0 +1,2169 @@
+{
+    "statusCode": 200,
+    "data": {
+        "components": [
+            {
+                "label": "Date",
+                "labelPosition": "top",
+                "displayInTimezone": "viewer",
+                "useLocaleSettings": false,
+                "allowInput": true,
+                "format": "yyyy-MM-dd",
+                "placeholder": "",
+                "description": "",
+                "tooltip": "Hi",
+                "customClass": "",
+                "tabindex": "",
+                "hidden": false,
+                "hideLabel": false,
+                "autofocus": false,
+                "disabled": false,
+                "tableView": false,
+                "modalEdit": false,
+                "shortcutButtons": [],
+                "enableDate": true,
+                "datePicker": {
+                    "disable": "",
+                    "disableFunction": "",
+                    "disableWeekends": false,
+                    "disableWeekdays": false,
+                    "minDate": null,
+                    "maxDate": "2024-12-11T12:00:00+03:00",
+                    "showWeeks": true,
+                    "startingDay": 0,
+                    "initDate": "",
+                    "minMode": "day",
+                    "maxMode": "year",
+                    "yearRows": 4,
+                    "yearColumns": 5
+                },
+                "enableTime": false,
+                "timePicker": {
+                    "showMeridian": true,
+                    "hourStep": 1,
+                    "minuteStep": 1,
+                    "readonlyInput": false,
+                    "mousewheel": true,
+                    "arrowkeys": true
+                },
+                "multiple": false,
+                "defaultValue": "",
+                "defaultDate": "",
+                "customOptions": {},
+                "persistent": true,
+                "protected": false,
+                "dbIndex": false,
+                "encrypted": false,
+                "redrawOn": "",
+                "clearOnHide": true,
+                "customDefaultValue": "",
+                "calculateValue": "",
+                "calculateServer": false,
+                "allowCalculateOverride": false,
+                "validateOn": "change",
+                "validate": {
+                    "required": false,
+                    "customMessage": "",
+                    "custom": "",
+                    "customPrivate": false,
+                    "json": "",
+                    "strictDateValidation": false,
+                    "multiple": false,
+                    "unique": false
+                },
+                "enableMinDateInput": false,
+                "enableMaxDateInput": false,
+                "unique": false,
+                "validateWhenHidden": false,
+                "errorLabel": "",
+                "errors": "",
+                "key": "dateTime",
+                "tags": [],
+                "properties": {},
+                "conditional": {
+                    "show": null,
+                    "when": null,
+                    "eq": "",
+                    "json": []
+                },
+                "customConditional": "",
+                "logic": [],
+                "attributes": {},
+                "overlay": {
+                    "style": "",
+                    "page": "",
+                    "left": "",
+                    "top": "",
+                    "width": "",
+                    "height": ""
+                },
+                "type": "datetime",
+                "timezone": "",
+                "dataGridLabel": false,
+                "input": true,
+                "widget": {
+                    "type": "calendar",
+                    "displayInTimezone": "viewer",
+                    "locale": "en-US",
+                    "useLocaleSettings": false,
+                    "allowInput": true,
+                    "mode": "single",
+                    "enableTime": false,
+                    "noCalendar": false,
+                    "format": "yyyy-MM-dd",
+                    "hourIncrement": 1,
+                    "minuteIncrement": 1,
+                    "time_24hr": false,
+                    "minDate": null,
+                    "disabledDates": "",
+                    "disableWeekends": false,
+                    "disableWeekdays": false,
+                    "disableFunction": "",
+                    "maxDate": "2024-12-11T12:00:00+03:00"
+                },
+                "stringDefaultValue": null,
+                "prefix": "",
+                "suffix": "",
+                "refreshOn": "",
+                "showCharCount": false,
+                "showWordCount": false,
+                "allowMultipleMasks": false,
+                "addons": [],
+                "datepickerMode": "day",
+                "id": "eb23in9"
+            },
+            {
+                "label": "Time",
+                "labelPosition": "top",
+                "displayInTimezone": "viewer",
+                "useLocaleSettings": false,
+                "allowInput": true,
+                "format": "hh:mm a",
+                "placeholder": "",
+                "description": "",
+                "tooltip": "",
+                "customClass": "",
+                "tabindex": "",
+                "hidden": false,
+                "hideLabel": false,
+                "autofocus": false,
+                "disabled": false,
+                "tableView": false,
+                "modalEdit": false,
+                "shortcutButtons": [],
+                "enableDate": false,
+                "datePicker": {
+                    "disable": "",
+                    "disableFunction": "",
+                    "disableWeekends": false,
+                    "disableWeekdays": false,
+                    "minDate": null,
+                    "maxDate": null,
+                    "showWeeks": true,
+                    "startingDay": 0,
+                    "initDate": "",
+                    "minMode": "day",
+                    "maxMode": "year",
+                    "yearRows": 4,
+                    "yearColumns": 5
+                },
+                "enableTime": true,
+                "timePicker": {
+                    "showMeridian": true,
+                    "hourStep": 1,
+                    "minuteStep": 1,
+                    "readonlyInput": false,
+                    "mousewheel": true,
+                    "arrowkeys": true
+                },
+                "multiple": false,
+                "defaultValue": "",
+                "defaultDate": "",
+                "customOptions": {},
+                "persistent": true,
+                "protected": false,
+                "dbIndex": false,
+                "encrypted": false,
+                "redrawOn": "",
+                "clearOnHide": true,
+                "customDefaultValue": "",
+                "calculateValue": "",
+                "calculateServer": false,
+                "allowCalculateOverride": false,
+                "validateOn": "change",
+                "validate": {
+                    "required": false,
+                    "customMessage": "",
+                    "custom": "",
+                    "customPrivate": false,
+                    "json": "",
+                    "strictDateValidation": false,
+                    "multiple": false,
+                    "unique": false
+                },
+                "enableMinDateInput": false,
+                "enableMaxDateInput": false,
+                "unique": false,
+                "validateWhenHidden": false,
+                "errorLabel": "",
+                "errors": "",
+                "key": "time",
+                "tags": [],
+                "properties": {},
+                "conditional": {
+                    "show": null,
+                    "when": null,
+                    "eq": "",
+                    "json": []
+                },
+                "customConditional": "",
+                "logic": [],
+                "attributes": {},
+                "overlay": {
+                    "style": "",
+                    "page": "",
+                    "left": "",
+                    "top": "",
+                    "width": "",
+                    "height": ""
+                },
+                "type": "datetime",
+                "timezone": "",
+                "dataGridLabel": false,
+                "input": true,
+                "widget": {
+                    "type": "calendar",
+                    "displayInTimezone": "viewer",
+                    "locale": "en-US",
+                    "useLocaleSettings": false,
+                    "allowInput": true,
+                    "mode": "single",
+                    "enableTime": true,
+                    "noCalendar": true,
+                    "format": "hh:mm a",
+                    "hourIncrement": 1,
+                    "minuteIncrement": 1,
+                    "time_24hr": false,
+                    "minDate": null,
+                    "disabledDates": "",
+                    "disableWeekends": false,
+                    "disableWeekdays": false,
+                    "disableFunction": "",
+                    "maxDate": null
+                },
+                "prefix": "",
+                "suffix": "",
+                "refreshOn": "",
+                "showCharCount": false,
+                "showWordCount": false,
+                "allowMultipleMasks": false,
+                "addons": [],
+                "datepickerMode": "day",
+                "id": "evvk0on",
+                "stringDefaultValue": null
+            },
+            {
+                "label": "Salary",
+                "labelPosition": "top",
+                "placeholder": "",
+                "description": "",
+                "tooltip": "",
+                "prefix": "",
+                "suffix": "",
+                "widget": {
+                    "type": "input"
+                },
+                "displayMask": "",
+                "applyMaskOn": "change",
+                "customClass": "",
+                "tabindex": "",
+                "autocomplete": "",
+                "hidden": false,
+                "hideLabel": false,
+                "mask": false,
+                "autofocus": false,
+                "disabled": false,
+                "tableView": false,
+                "modalEdit": false,
+                "multiple": false,
+                "persistent": true,
+                "delimiter": false,
+                "requireDecimal": false,
+                "inputFormat": "plain",
+                "protected": false,
+                "dbIndex": false,
+                "truncateMultipleSpaces": false,
+                "encrypted": false,
+                "redrawOn": "",
+                "clearOnHide": true,
+                "customDefaultValue": "",
+                "calculateValue": "",
+                "calculateServer": false,
+                "allowCalculateOverride": false,
+                "validateOn": "change",
+                "validate": {
+                    "required": false,
+                    "customMessage": "",
+                    "custom": "",
+                    "customPrivate": false,
+                    "json": "",
+                    "min": 1,
+                    "max": 100,
+                    "strictDateValidation": false,
+                    "multiple": false,
+                    "unique": false,
+                    "step": "any",
+                    "integer": ""
+                },
+                "validateWhenHidden": false,
+                "errorLabel": "",
+                "errors": "",
+                "key": "salary",
+                "tags": [],
+                "properties": {},
+                "conditional": {
+                    "show": null,
+                    "when": null,
+                    "eq": "",
+                    "json": [
+                        {
+                            "dependsOn": "dateTime",
+                            "type": "hide",
+                            "op": "ge",
+                            "compareOn": "value",
+                            "value": "10-12-2024 00:00:00"
+                        }
+                    ]
+                },
+                "customConditional": "",
+                "logic": [],
+                "attributes": {},
+                "overlay": {
+                    "style": "",
+                    "page": "",
+                    "left": "",
+                    "top": "",
+                    "width": "",
+                    "height": ""
+                },
+                "type": "number",
+                "dataGridLabel": false,
+                "input": true,
+                "unique": false,
+                "refreshOn": "",
+                "showCharCount": false,
+                "showWordCount": false,
+                "allowMultipleMasks": false,
+                "addons": [],
+                "id": "eaqkyrr",
+                "defaultValue": null,
+                "stringDefaultValue": null
+            },
+            {
+                "label": "Consent",
+                "description": "",
+                "tooltip": "",
+                "shortcut": "",
+                "inputType": "checkbox",
+                "customClass": "",
+                "tabindex": "",
+                "hidden": false,
+                "hideLabel": false,
+                "autofocus": false,
+                "disabled": false,
+                "tableView": false,
+                "modalEdit": false,
+                "defaultValue": false,
+                "persistent": true,
+                "protected": false,
+                "dbIndex": false,
+                "encrypted": false,
+                "redrawOn": "",
+                "clearOnHide": true,
+                "customDefaultValue": "",
+                "calculateValue": "",
+                "calculateServer": false,
+                "allowCalculateOverride": false,
+                "validate": {
+                    "required": false,
+                    "customMessage": "",
+                    "custom": "",
+                    "customPrivate": false,
+                    "json": "",
+                    "strictDateValidation": false,
+                    "multiple": false,
+                    "unique": false
+                },
+                "validateWhenHidden": false,
+                "errorLabel": "",
+                "errors": "",
+                "key": "consent",
+                "tags": [],
+                "properties": {},
+                "conditional": {
+                    "show": null,
+                    "when": null,
+                    "eq": "",
+                    "json": [
+                        {
+                            "dependsOn": "salary",
+                            "type": "show",
+                            "op": "ne",
+                            "compareOn": "value",
+                            "value": "600"
+                        },
+                        {
+                            "dependsOn": "salary",
+                            "type": "required",
+                            "op": "lt",
+                            "compareOn": "value",
+                            "value": "600"
+                        }
+                    ]
+                },
+                "customConditional": "",
+                "logic": [],
+                "attributes": {},
+                "overlay": {
+                    "style": "",
+                    "page": "",
+                    "left": "",
+                    "top": "",
+                    "width": "",
+                    "height": ""
+                },
+                "type": "checkbox",
+                "name": "",
+                "value": "",
+                "dataGridLabel": true,
+                "input": true,
+                "placeholder": "",
+                "prefix": "",
+                "suffix": "",
+                "multiple": false,
+                "unique": false,
+                "refreshOn": "",
+                "labelPosition": "right",
+                "widget": null,
+                "validateOn": "change",
+                "showCharCount": false,
+                "showWordCount": false,
+                "allowMultipleMasks": false,
+                "addons": [],
+                "id": "etn93x",
+                "stringDefaultValue": "true"
+            },
+            {
+                "label": "Name",
+                "labelPosition": "top",
+                "placeholder": "",
+                "description": "",
+                "tooltip": "",
+                "prefix": "",
+                "suffix": "",
+                "widget": {
+                    "type": "input"
+                },
+                "inputMask": "",
+                "displayMask": "",
+                "applyMaskOn": "change",
+                "allowMultipleMasks": false,
+                "customClass": "",
+                "tabindex": "",
+                "autocomplete": "",
+                "hidden": false,
+                "hideLabel": false,
+                "showWordCount": false,
+                "showCharCount": false,
+                "mask": false,
+                "autofocus": false,
+                "spellcheck": true,
+                "disabled": false,
+                "tableView": true,
+                "modalEdit": false,
+                "multiple": false,
+                "persistent": true,
+                "inputFormat": "plain",
+                "protected": false,
+                "dbIndex": false,
+                "case": "",
+                "truncateMultipleSpaces": false,
+                "encrypted": false,
+                "redrawOn": "",
+                "clearOnHide": true,
+                "customDefaultValue": "",
+                "calculateValue": "",
+                "calculateServer": false,
+                "allowCalculateOverride": false,
+                "validateOn": "change",
+                "validate": {
+                    "required": false,
+                    "pattern": "",
+                    "customMessage": "",
+                    "custom": "",
+                    "customPrivate": false,
+                    "json": "",
+                    "minLength": null,
+                    "maxLength": null,
+                    "strictDateValidation": false,
+                    "multiple": false,
+                    "unique": false
+                },
+                "unique": false,
+                "validateWhenHidden": false,
+                "errorLabel": "",
+                "errors": "",
+                "key": "name",
+                "tags": [],
+                "properties": {},
+                "conditional": {
+                    "show": null,
+                    "when": null,
+                    "eq": "",
+                    "json": []
+                },
+                "customConditional": "",
+                "logic": [],
+                "attributes": {},
+                "overlay": {
+                    "style": "",
+                    "page": "",
+                    "left": "",
+                    "top": "",
+                    "width": "",
+                    "height": ""
+                },
+                "type": "textfield",
+                "dataGridLabel": false,
+                "input": true,
+                "refreshOn": "",
+                "addons": [],
+                "inputType": "text",
+                "id": "eg7x9b5",
+                "defaultValue": null,
+                "stringDefaultValue": null
+            },
+            {
+                "label": "Radio Selection",
+                "labelPosition": "top",
+                "optionsLabelPosition": "right",
+                "description": "",
+                "tooltip": "",
+                "customClass": "",
+                "tabindex": "",
+                "inline": true,
+                "hidden": false,
+                "hideLabel": false,
+                "autofocus": false,
+                "disabled": false,
+                "tableView": false,
+                "modalEdit": false,
+                "dataSrc": "values",
+                "defaultValue": "selection1",
+                "values": [
+                    {
+                        "label": "Selection 1",
+                        "value": "selection1",
+                        "shortcut": ""
+                    },
+                    {
+                        "label": "Selection 2",
+                        "value": "selection2",
+                        "shortcut": ""
+                    },
+                    {
+                        "label": "Selection 3",
+                        "value": "selection3",
+                        "shortcut": ""
+                    }
+                ],
+                "dataType": "",
+                "valueProperty": "",
+                "persistent": true,
+                "protected": false,
+                "dbIndex": false,
+                "encrypted": false,
+                "clearOnHide": true,
+                "customDefaultValue": "",
+                "calculateValue": "",
+                "calculateServer": false,
+                "allowCalculateOverride": false,
+                "validate": {
+                    "required": true,
+                    "onlyAvailableItems": false,
+                    "customMessage": "",
+                    "custom": "",
+                    "customPrivate": false,
+                    "json": "",
+                    "strictDateValidation": false,
+                    "multiple": false,
+                    "unique": false
+                },
+                "validateWhenHidden": false,
+                "errorLabel": "Test Error",
+                "errors": "",
+                "key": "radioSelection",
+                "tags": [],
+                "properties": {},
+                "conditional": {
+                    "show": null,
+                    "when": null,
+                    "eq": "",
+                    "json": [
+                        {
+                            "dependsOn": "salary",
+                            "type": "show",
+                            "op": "ne",
+                            "compareOn": "value",
+                            "value": "600"
+                        },
+                        {
+                            "dependsOn": "salary",
+                            "type": "required",
+                            "op": "lt",
+                            "compareOn": "value",
+                            "value": "600"
+                        }
+                    ]
+                },
+                "customConditional": "",
+                "logic": [],
+                "attributes": {},
+                "overlay": {
+                    "style": "",
+                    "page": "",
+                    "left": "",
+                    "top": "",
+                    "width": "",
+                    "height": ""
+                },
+                "type": "radio",
+                "dataGridLabel": false,
+                "data": {
+                    "url": ""
+                },
+                "template": "<span>{{ item.label }}</span>",
+                "authenticate": false,
+                "ignoreCache": false,
+                "redrawOn": "",
+                "input": true,
+                "placeholder": "",
+                "prefix": "",
+                "suffix": "",
+                "multiple": false,
+                "unique": false,
+                "refreshOn": "",
+                "widget": null,
+                "validateOn": "change",
+                "showCharCount": false,
+                "showWordCount": false,
+                "allowMultipleMasks": false,
+                "addons": [],
+                "inputType": "radio",
+                "fieldSet": false,
+                "id": "epumig",
+                "stringDefaultValue": "selection1"
+            },
+            {
+                "label": "Upload",
+                "labelPosition": "top",
+                "description": "",
+                "tooltip": "",
+                "customClass": "",
+                "tabindex": "",
+                "hidden": false,
+                "hideLabel": false,
+                "autofocus": false,
+                "disabled": true,
+                "tableView": false,
+                "modalEdit": false,
+                "storage": "url",
+                "dir": "",
+                "fileNameTemplate": "",
+                "image": false,
+                "uploadOnly": false,
+                "webcam": false,
+                "fileTypes": [
+                    {
+                        "label": "asd",
+                        "value": "application/pdf"
+                    }
+                ],
+                "filePattern": "*",
+                "fileMinSize": "100",
+                "fileMaxSize": "10000000",
+                "multiple": true,
+                "persistent": true,
+                "protected": false,
+                "dbIndex": false,
+                "encrypted": false,
+                "redrawOn": "",
+                "clearOnHide": true,
+                "customDefaultValue": "",
+                "calculateValue": "",
+                "calculateServer": false,
+                "allowCalculateOverride": false,
+                "validate": {
+                    "required": false,
+                    "customMessage": "",
+                    "custom": "",
+                    "customPrivate": false,
+                    "json": "",
+                    "strictDateValidation": false,
+                    "multiple": false,
+                    "unique": false
+                },
+                "validateWhenHidden": false,
+                "errorLabel": "",
+                "errors": "",
+                "key": "file",
+                "tags": [],
+                "properties": {},
+                "conditional": {
+                    "show": null,
+                    "when": null,
+                    "eq": "",
+                    "json": [
+                        {
+                            "dependsOn": "name",
+                            "type": "disable",
+                            "op": "contains",
+                            "compareOn": "value",
+                            "value": "YOUSEF"
+                        }
+                    ]
+                },
+                "customConditional": "",
+                "logic": [],
+                "attributes": {},
+                "overlay": {
+                    "style": "",
+                    "page": "",
+                    "left": "",
+                    "top": "",
+                    "width": "",
+                    "height": ""
+                },
+                "type": "file",
+                "dataGridLabel": false,
+                "privateDownload": false,
+                "imageSize": "200",
+                "input": true,
+                "stringDefaultValue": null,
+                "placeholder": "",
+                "prefix": "",
+                "suffix": "",
+                "defaultValue": null,
+                "unique": false,
+                "refreshOn": "",
+                "widget": null,
+                "validateOn": "change",
+                "showCharCount": false,
+                "showWordCount": false,
+                "allowMultipleMasks": false,
+                "addons": [],
+                "id": "eyhcii9",
+                "url": "",
+                "options": "",
+                "fileKey": ""
+            },
+            {
+                "label": "Region",
+                "labelPosition": "top",
+                "widget": "choicesjs",
+                "placeholder": "",
+                "description": "",
+                "tooltip": "",
+                "customClass": "",
+                "tabindex": "",
+                "hidden": false,
+                "hideLabel": false,
+                "uniqueOptions": false,
+                "autofocus": false,
+                "disabled": false,
+                "tableView": true,
+                "modalEdit": false,
+                "multiple": false,
+                "dataSrc": "resource",
+                "data": {
+                    "values": [
+                        {
+                            "label": "Muscat",
+                            "value": "01"
+                        },
+                        {
+                            "label": "Dhofar",
+                            "value": "02"
+                        },
+                        {
+                            "label": "Musandam",
+                            "value": "03"
+                        },
+                        {
+                            "label": "A'Sharqiyah South",
+                            "value": "04"
+                        },
+                        {
+                            "label": "A'Sharqiyah North",
+                            "value": "05"
+                        },
+                        {
+                            "label": "Al Batinah North",
+                            "value": "06"
+                        },
+                        {
+                            "label": "Al Batinah South",
+                            "value": "07"
+                        },
+                        {
+                            "label": "A'Dakhiliyah",
+                            "value": "08"
+                        },
+                        {
+                            "label": "A'Dhahirah",
+                            "value": "09"
+                        },
+                        {
+                            "label": "Al Buraimi",
+                            "value": "10"
+                        },
+                        {
+                            "label": "Al Wusta",
+                            "value": "11"
+                        },
+                        {
+                            "label": "Al Batinah",
+                            "value": "12"
+                        },
+                        {
+                            "label": "Al Sharqiyah",
+                            "value": "13"
+                        }
+                    ],
+                    "resource": "",
+                    "url": "",
+                    "json": "",
+                    "custom": ""
+                },
+                "dataType": "",
+                "idPath": "region",
+                "valueProperty": "",
+                "template": "<span>{{ item.label }}</span>",
+                "refreshOn": "",
+                "refreshOnBlur": "",
+                "clearOnRefresh": false,
+                "searchEnabled": true,
+                "selectThreshold": 0.3,
+                "readOnlyValue": false,
+                "customOptions": {},
+                "useExactSearch": false,
+                "persistent": true,
+                "protected": false,
+                "dbIndex": false,
+                "encrypted": false,
+                "clearOnHide": true,
+                "customDefaultValue": "",
+                "calculateValue": "",
+                "calculateServer": false,
+                "allowCalculateOverride": false,
+                "validateOn": "change",
+                "validate": {
+                    "required": false,
+                    "onlyAvailableItems": false,
+                    "customMessage": "",
+                    "custom": "",
+                    "customPrivate": false,
+                    "json": "",
+                    "strictDateValidation": false,
+                    "multiple": false,
+                    "unique": false
+                },
+                "unique": false,
+                "validateWhenHidden": false,
+                "errorLabel": "",
+                "errors": "",
+                "key": "region",
+                "tags": [],
+                "properties": {},
+                "conditional": {
+                    "show": null,
+                    "when": null,
+                    "eq": "",
+                    "json": []
+                },
+                "customConditional": "",
+                "logic": [],
+                "attributes": {},
+                "overlay": {
+                    "style": "",
+                    "page": "",
+                    "left": "",
+                    "top": "",
+                    "width": "",
+                    "height": ""
+                },
+                "type": "select",
+                "indexeddb": {
+                    "filter": {}
+                },
+                "dataGridLabel": false,
+                "lazyLoad": true,
+                "selectFields": "",
+                "searchField": "",
+                "searchDebounce": 0.3,
+                "minSearch": 0,
+                "filter": "",
+                "limit": 100,
+                "noRefreshOnScroll": false,
+                "addResource": false,
+                "reference": false,
+                "authenticate": false,
+                "ignoreCache": false,
+                "redrawOn": "",
+                "input": true,
+                "keyModified": true,
+                "prefix": "",
+                "suffix": "",
+                "showCharCount": false,
+                "showWordCount": false,
+                "allowMultipleMasks": false,
+                "addons": [],
+                "fuseOptions": {
+                    "include": "score",
+                    "threshold": 0.3
+                },
+                "id": "e5pw90f",
+                "defaultValue": null,
+                "stringDefaultValue": null
+            },
+            {
+                "label": "Wilaya",
+                "labelPosition": "top",
+                "widget": "choicesjs",
+                "placeholder": "",
+                "description": "",
+                "tooltip": "",
+                "customClass": "",
+                "tabindex": "",
+                "hidden": false,
+                "hideLabel": false,
+                "uniqueOptions": false,
+                "autofocus": false,
+                "disabled": false,
+                "tableView": true,
+                "modalEdit": false,
+                "multiple": false,
+                "dataSrc": "resource",
+                "data": {
+                    "values": [
+                        {
+                            "label": "Al Amrat",
+                            "value": "ALAMRAT",
+                            "relatedWith": "01"
+                        },
+                        {
+                            "label": "As Seeb",
+                            "value": "ASSEEB",
+                            "relatedWith": "01"
+                        },
+                        {
+                            "label": "Bawshar",
+                            "value": "BAWSHAR",
+                            "relatedWith": "01"
+                        },
+                        {
+                            "label": "Muscat",
+                            "value": "MUSCAT",
+                            "relatedWith": "01"
+                        },
+                        {
+                            "label": "Mutrah",
+                            "value": "MUTRAH",
+                            "relatedWith": "01"
+                        },
+                        {
+                            "label": "Qurayyat",
+                            "value": "QURAYYAT",
+                            "relatedWith": "01"
+                        },
+                        {
+                            "label": "North Muscat",
+                            "value": "NORTHMUSCAT",
+                            "relatedWith": "01"
+                        },
+                        {
+                            "label": "South Muscat",
+                            "value": "SOUTHHMUSCAT",
+                            "relatedWith": "01"
+                        },
+                        {
+                            "label": "City Center",
+                            "value": "CITYCENTER",
+                            "relatedWith": "01"
+                        },
+                        {
+                            "label": "Muscat Airport",
+                            "value": "MUSCATAIRPORT",
+                            "relatedWith": "01"
+                        },
+                        {
+                            "label": "Al Bahja",
+                            "value": "ALBAHJA",
+                            "relatedWith": "01"
+                        },
+                        {
+                            "label": "Al Amerat",
+                            "value": "ALAMERAT",
+                            "relatedWith": "01"
+                        },
+                        {
+                            "label": "Lulu Darsait",
+                            "value": "LULUDARSAIT",
+                            "relatedWith": "01"
+                        },
+                        {
+                            "label": "Al Qurum CC",
+                            "value": "ALQURMCC",
+                            "relatedWith": "01"
+                        },
+                        {
+                            "label": "Al Khoudh",
+                            "value": "ALKHOUDH",
+                            "relatedWith": "01"
+                        },
+                        {
+                            "label": "Dalkoot",
+                            "value": "DALKOOT",
+                            "relatedWith": "02"
+                        },
+                        {
+                            "label": "Dhofar",
+                            "value": "DHOFAR",
+                            "relatedWith": "02"
+                        },
+                        {
+                            "label": "Mirbat",
+                            "value": "MIRBAT",
+                            "relatedWith": "02"
+                        },
+                        {
+                            "label": "Mokshin",
+                            "value": "MOKSHIN",
+                            "relatedWith": "02"
+                        },
+                        {
+                            "label": "Rakhyut",
+                            "value": "RAKHYUT",
+                            "relatedWith": "02"
+                        },
+                        {
+                            "label": "Saadah",
+                            "value": "SADAH",
+                            "relatedWith": "02"
+                        },
+                        {
+                            "label": "Salalah",
+                            "value": "SALALAH",
+                            "relatedWith": "02"
+                        },
+                        {
+                            "label": "Shalim and Halaniyat Islands",
+                            "value": "SHALIMANDHALANIYATISLANDS",
+                            "relatedWith": "02"
+                        },
+                        {
+                            "label": "Taqah",
+                            "value": "TAQAH",
+                            "relatedWith": "02"
+                        },
+                        {
+                            "label": "Thumrait",
+                            "value": "THAMIRT",
+                            "relatedWith": "02"
+                        },
+                        {
+                            "label": "Awqad",
+                            "value": "AWQAD",
+                            "relatedWith": "02"
+                        },
+                        {
+                            "label": "Lulu Salalah",
+                            "value": "LULUSALALAH",
+                            "relatedWith": "02"
+                        },
+                        {
+                            "label": "Salalah Airport",
+                            "value": "SALALAHAIRPORT",
+                            "relatedWith": "02"
+                        },
+                        {
+                            "label": "Bukha",
+                            "value": "BUKHA",
+                            "relatedWith": "03"
+                        },
+                        {
+                            "label": "Diba",
+                            "value": "DIBA",
+                            "relatedWith": "03"
+                        },
+                        {
+                            "label": "Khassab",
+                            "value": "KHASAB",
+                            "relatedWith": "03"
+                        },
+                        {
+                            "label": "Madha",
+                            "value": "MADHA",
+                            "relatedWith": "03"
+                        },
+                        {
+                            "label": "Al Kamil and Al Wafi",
+                            "value": "ALKAMILALWAFI",
+                            "relatedWith": "04"
+                        },
+                        {
+                            "label": "Jaalan Bani Bu Ali",
+                            "value": "JALANBANIBUALI",
+                            "relatedWith": "04"
+                        },
+                        {
+                            "label": "Jalan Bani Bu Hassan",
+                            "value": "JALANBANIBUHASSaN",
+                            "relatedWith": "04"
+                        },
+                        {
+                            "label": "Maseerah",
+                            "value": "MASEERAH",
+                            "relatedWith": "04"
+                        },
+                        {
+                            "label": "Sur",
+                            "value": "SUR",
+                            "relatedWith": "04"
+                        },
+                        {
+                            "label": "Al Mudhaibi",
+                            "value": "ALMUDHAIBI",
+                            "relatedWith": "05"
+                        },
+                        {
+                            "label": "Al Qabil",
+                            "value": "ALQABIL",
+                            "relatedWith": "05"
+                        },
+                        {
+                            "label": "Bidiyah",
+                            "value": "BIDIYAH",
+                            "relatedWith": "05"
+                        },
+                        {
+                            "label": "Dimma And At Tayyin",
+                            "value": "DIMMAATTAYYIN",
+                            "relatedWith": "05"
+                        },
+                        {
+                            "label": "Ibra",
+                            "value": "IBRA",
+                            "relatedWith": "05"
+                        },
+                        {
+                            "label": "Wadi Bani Khalid",
+                            "value": "WADIBANIKHALID",
+                            "relatedWith": "05"
+                        },
+                        {
+                            "label": "Al Batinah North",
+                            "value": "ALBATINAHNORTH",
+                            "relatedWith": "06"
+                        },
+                        {
+                            "label": "Al Khaburah",
+                            "value": "AL-KABURA",
+                            "relatedWith": "06"
+                        },
+                        {
+                            "label": "Al Suwaiq",
+                            "value": "ALSUWAIQ",
+                            "relatedWith": "06"
+                        },
+                        {
+                            "label": "Liwa",
+                            "value": "LWAY",
+                            "relatedWith": "06"
+                        },
+                        {
+                            "label": "Saham",
+                            "value": "SAHAM",
+                            "relatedWith": "06"
+                        },
+                        {
+                            "label": "Shinas",
+                            "value": "SHINAS",
+                            "relatedWith": "06"
+                        },
+                        {
+                            "label": "Sohar",
+                            "value": "SOHAR",
+                            "relatedWith": "06"
+                        },
+                        {
+                            "label": "Al Awabi",
+                            "value": "ALAWABI",
+                            "relatedWith": "07"
+                        },
+                        {
+                            "label": "Al Batinah South",
+                            "value": "ALBATINAHSOUTH",
+                            "relatedWith": "07"
+                        },
+                        {
+                            "label": "Al Masanaâ€™h",
+                            "value": "ALMASANAH",
+                            "relatedWith": "07"
+                        },
+                        {
+                            "label": "Al Musanaah",
+                            "value": "ALMUSANAAH",
+                            "relatedWith": "07"
+                        },
+                        {
+                            "label": "Al Rustaq",
+                            "value": "ALRUSTAQ",
+                            "relatedWith": "07"
+                        },
+                        {
+                            "label": "Barka",
+                            "value": "BARKA",
+                            "relatedWith": "07"
+                        },
+                        {
+                            "label": "Nakhal",
+                            "value": "NAKHAL",
+                            "relatedWith": "07"
+                        },
+                        {
+                            "label": "Wadi Al Maawil",
+                            "value": "WADIALMAWIL",
+                            "relatedWith": "07"
+                        },
+                        {
+                            "label": "Al Dakhiliyah",
+                            "value": "ADAKHILIYAH",
+                            "relatedWith": "08"
+                        },
+                        {
+                            "label": "Adam",
+                            "value": "ADAM",
+                            "relatedWith": "08"
+                        },
+                        {
+                            "label": "Al Hamra",
+                            "value": "ALHAMRA",
+                            "relatedWith": "08"
+                        },
+                        {
+                            "label": "Bahlah",
+                            "value": "BAHLAH",
+                            "relatedWith": "08"
+                        },
+                        {
+                            "label": "Bidbid",
+                            "value": "BIDBID",
+                            "relatedWith": "08"
+                        },
+                        {
+                            "label": "Izki",
+                            "value": "IZKI",
+                            "relatedWith": "08"
+                        },
+                        {
+                            "label": "Monah",
+                            "value": "MONAH",
+                            "relatedWith": "08"
+                        },
+                        {
+                            "label": "Nizwa",
+                            "value": "NIZWA",
+                            "relatedWith": "08"
+                        },
+                        {
+                            "label": "Samail",
+                            "value": "SAMAIL",
+                            "relatedWith": "08"
+                        },
+                        {
+                            "label": "A'Dhahirah",
+                            "value": "ADHAHIRAH",
+                            "relatedWith": "09"
+                        },
+                        {
+                            "label": "Dhank",
+                            "value": "DHANK",
+                            "relatedWith": "09"
+                        },
+                        {
+                            "label": "Ibri",
+                            "value": "IBRI",
+                            "relatedWith": "09"
+                        },
+                        {
+                            "label": "Yanqul",
+                            "value": "YANQUL",
+                            "relatedWith": "09"
+                        },
+                        {
+                            "label": "Al Buraimi",
+                            "value": "ALBURAiIMI",
+                            "relatedWith": "10"
+                        },
+                        {
+                            "label": "As Sinaynah",
+                            "value": "ASSINAYNAH",
+                            "relatedWith": "10"
+                        },
+                        {
+                            "label": "Mahadh",
+                            "value": "MAHADH",
+                            "relatedWith": "10"
+                        },
+                        {
+                            "label": "Duqum",
+                            "value": "ADDUQUM",
+                            "relatedWith": "11"
+                        },
+                        {
+                            "label": "AL-Jasir",
+                            "value": "AL-JASIR",
+                            "relatedWith": "11"
+                        },
+                        {
+                            "label": "Hima",
+                            "value": "HIMA",
+                            "relatedWith": "11"
+                        },
+                        {
+                            "label": "Mahut",
+                            "value": "MAHUT",
+                            "relatedWith": "11"
+                        },
+                        {
+                            "label": "Al Batinah",
+                            "value": "ALBATINAH",
+                            "relatedWith": "12"
+                        },
+                        {
+                            "label": "Al Sharqiya",
+                            "value": "ALSHARQIYA",
+                            "relatedWith": "13"
+                        },
+                        {
+                            "label": "Maseerah",
+                            "value": "MASEERAH",
+                            "relatedWith": "13"
+                        },
+                        {
+                            "label": "Sinaw",
+                            "value": "SINAW",
+                            "relatedWith": "05"
+                        },
+                        {
+                            "label": "AL Kamil",
+                            "value": "ALKAMIL",
+                            "relatedWith": "04"
+                        },
+                        {
+                            "label": "Haima",
+                            "value": "HAIMA",
+                            "relatedWith": "11"
+                        },
+                        {
+                            "label": "Ghala",
+                            "value": "GHALA",
+                            "relatedWith": "01"
+                        }
+                    ],
+                    "resource": "",
+                    "url": "",
+                    "json": "",
+                    "custom": ""
+                },
+                "dataType": "",
+                "idPath": "wilaya",
+                "valueProperty": "",
+                "template": "<span>{{ item.label }}</span>",
+                "refreshOn": "",
+                "refreshOnBlur": "",
+                "clearOnRefresh": false,
+                "searchEnabled": true,
+                "selectThreshold": 0.3,
+                "readOnlyValue": false,
+                "customOptions": {},
+                "useExactSearch": false,
+                "persistent": true,
+                "protected": false,
+                "dbIndex": false,
+                "encrypted": false,
+                "clearOnHide": true,
+                "customDefaultValue": "",
+                "calculateValue": "",
+                "calculateServer": false,
+                "allowCalculateOverride": false,
+                "validateOn": "change",
+                "validate": {
+                    "required": false,
+                    "onlyAvailableItems": false,
+                    "customMessage": "",
+                    "custom": "",
+                    "customPrivate": false,
+                    "json": "",
+                    "strictDateValidation": false,
+                    "multiple": false,
+                    "unique": false
+                },
+                "unique": false,
+                "validateWhenHidden": false,
+                "errorLabel": "",
+                "errors": "",
+                "key": "wilaya",
+                "tags": [],
+                "properties": {},
+                "conditional": {
+                    "show": null,
+                    "when": null,
+                    "eq": "",
+                    "json": [
+                        {
+                            "dependsOn": "region",
+                            "type": "filter",
+                            "op": "eq",
+                            "compareOn": "value",
+                            "value": ""
+                        }
+                    ]
+                },
+                "customConditional": "",
+                "logic": [],
+                "attributes": {},
+                "overlay": {
+                    "style": "",
+                    "page": "",
+                    "left": "",
+                    "top": "",
+                    "width": "",
+                    "height": ""
+                },
+                "type": "select",
+                "indexeddb": {
+                    "filter": {}
+                },
+                "dataGridLabel": false,
+                "lazyLoad": true,
+                "selectFields": "region_id",
+                "searchField": "",
+                "searchDebounce": 0.3,
+                "minSearch": 0,
+                "filter": "",
+                "limit": 100,
+                "noRefreshOnScroll": false,
+                "addResource": false,
+                "reference": false,
+                "authenticate": false,
+                "ignoreCache": false,
+                "redrawOn": "",
+                "input": true,
+                "prefix": "",
+                "suffix": "",
+                "showCharCount": false,
+                "showWordCount": false,
+                "allowMultipleMasks": false,
+                "addons": [],
+                "fuseOptions": {
+                    "include": "score",
+                    "threshold": 0.3
+                },
+                "id": "efdxrza",
+                "defaultValue": null,
+                "stringDefaultValue": null
+            },
+            {
+                "label": "Area",
+                "labelPosition": "top",
+                "widget": "choicesjs",
+                "placeholder": "",
+                "description": "",
+                "tooltip": "",
+                "customClass": "",
+                "tabindex": "",
+                "hidden": false,
+                "hideLabel": false,
+                "uniqueOptions": false,
+                "autofocus": false,
+                "disabled": false,
+                "tableView": true,
+                "modalEdit": false,
+                "multiple": false,
+                "dataSrc": "resource",
+                "data": {
+                    "values": [
+                        {
+                            "label": "Al Batinah",
+                            "value": "01",
+                            "relatedWith": "ALBATINAH"
+                        },
+                        {
+                            "label": "Al Batinah North - Al Suwaiq",
+                            "value": "02",
+                            "relatedWith": "ALSUWAIQ"
+                        },
+                        {
+                            "label": "Al Batinah North - Sohar",
+                            "value": "03",
+                            "relatedWith": "SOHAR"
+                        },
+                        {
+                            "label": "Al Batinah North - Saham",
+                            "value": "04",
+                            "relatedWith": "SAHAM"
+                        },
+                        {
+                            "label": "Al Batinah North - Sohar Industrial",
+                            "value": "05",
+                            "relatedWith": "SOHAR"
+                        },
+                        {
+                            "label": "Al Batinah North - Shinas",
+                            "value": "06",
+                            "relatedWith": "SHINAS"
+                        },
+                        {
+                            "label": "Al Batinah South - Barka",
+                            "value": "07",
+                            "relatedWith": "BARKA"
+                        },
+                        {
+                            "label": "Al Batinah South - Al Musanaa",
+                            "value": "08",
+                            "relatedWith": "ALMUSANAAH"
+                        },
+                        {
+                            "label": "Al Batinah South - Nakhal",
+                            "value": "09",
+                            "relatedWith": "NAKHAL"
+                        },
+                        {
+                            "label": "Nakhal Outlet- OT",
+                            "value": "11",
+                            "relatedWith": "NAKHAL"
+                        },
+                        {
+                            "label": "Al Batinah South - Al Rustaq",
+                            "value": "12",
+                            "relatedWith": "ALRUSTAQ"
+                        },
+                        {
+                            "label": "Al Buraimi - Al Buraimi",
+                            "value": "13",
+                            "relatedWith": "ALBURAiIMI"
+                        },
+                        {
+                            "label": "Al Dahira",
+                            "value": "14",
+                            "relatedWith": "IBRI"
+                        },
+                        {
+                            "label": "Ibri",
+                            "value": "15",
+                            "relatedWith": "IBRI"
+                        },
+                        {
+                            "label": "Al Dhahira - Ibri",
+                            "value": "16",
+                            "relatedWith": "IBRI"
+                        },
+                        {
+                            "label": "Al Dakhliya - Nizwa",
+                            "value": "17",
+                            "relatedWith": "NIZWA"
+                        },
+                        {
+                            "label": "Al Dakhliya - Bahla",
+                            "value": "18",
+                            "relatedWith": "BAHLAH"
+                        },
+                        {
+                            "label": "Al Dhahira - Yanqul",
+                            "value": "19",
+                            "relatedWith": "YANQUL"
+                        },
+                        {
+                            "label": "Al Dakhliya",
+                            "value": "20",
+                            "relatedWith": "ADAKHILIYAH"
+                        },
+                        {
+                            "label": "Al Dakhliya - Samail",
+                            "value": "21",
+                            "relatedWith": "SAMAIL"
+                        },
+                        {
+                            "label": "Maseerah",
+                            "value": "22",
+                            "relatedWith": "MASEERAH"
+                        },
+                        {
+                            "label": "Al Sharqiya",
+                            "value": "23",
+                            "relatedWith": "MASEERAH"
+                        },
+                        {
+                            "label": "Al Sharqiya - Maseerah",
+                            "value": "24",
+                            "relatedWith": "ALSHARQIYA"
+                        },
+                        {
+                            "label": "Al Sharqiya North - Ibra",
+                            "value": "25",
+                            "relatedWith": "IBRA"
+                        },
+                        {
+                            "label": "Al Sharqiya North - Sinaw",
+                            "value": "26",
+                            "relatedWith": "SINAW"
+                        },
+                        {
+                            "label": "Al Sharqiya North - Al Mudhaibi",
+                            "value": "27",
+                            "relatedWith": "ALMUDHAIBI"
+                        },
+                        {
+                            "label": "Al Sharqiya - Jalan Bani Bu Hassan",
+                            "value": "28",
+                            "relatedWith": "JALANBANIBUHASSaN"
+                        },
+                        {
+                            "label": "Al Sharqiya South - AL Kamil",
+                            "value": "29",
+                            "relatedWith": "ALKAMIL"
+                        },
+                        {
+                            "label": "Al Sharqiya  South - Jaalan Bani Bu Ali",
+                            "value": "30",
+                            "relatedWith": "JALANBANIBUALI"
+                        },
+                        {
+                            "label": "Al Sharqiya  South - Sur",
+                            "value": "31",
+                            "relatedWith": "SUR"
+                        },
+                        {
+                            "label": "Al Wusta - Haima",
+                            "value": "32",
+                            "relatedWith": "HAIMA"
+                        },
+                        {
+                            "label": "Al Wusta - Duqum",
+                            "value": "33",
+                            "relatedWith": "ADDUQUM"
+                        },
+                        {
+                            "label": "Dhofar",
+                            "value": "34",
+                            "relatedWith": "SALALAH"
+                        },
+                        {
+                            "label": "Dhofar - Thumrait",
+                            "value": "35",
+                            "relatedWith": "THAMIRT"
+                        },
+                        {
+                            "label": "Dhofar - Saadah",
+                            "value": "36",
+                            "relatedWith": "SADAH"
+                        },
+                        {
+                            "label": "Dhofar - Awqad",
+                            "value": "37",
+                            "relatedWith": "AWQAD"
+                        },
+                        {
+                            "label": "Dhofar -Lulu Salalah",
+                            "value": "38",
+                            "relatedWith": "LULUSALALAH"
+                        },
+                        {
+                            "label": "Dhofar - Salalah Airport",
+                            "value": "39",
+                            "relatedWith": "SALALAHAIRPORT"
+                        },
+                        {
+                            "label": "Musandam",
+                            "value": "40",
+                            "relatedWith": "KHASAB"
+                        },
+                        {
+                            "label": "Musandam - Khassab",
+                            "value": "41",
+                            "relatedWith": "KHASAB"
+                        },
+                        {
+                            "label": "Omantel Head Office",
+                            "value": "42",
+                            "relatedWith": "GHALA"
+                        },
+                        {
+                            "label": "North Muscat",
+                            "value": "43",
+                            "relatedWith": "NORTHMUSCAT"
+                        },
+                        {
+                            "label": "South Muscat",
+                            "value": "44",
+                            "relatedWith": "SOUTHHMUSCAT"
+                        },
+                        {
+                            "label": "Muscat - Muscat CC",
+                            "value": "45",
+                            "relatedWith": "CITYCENTER"
+                        },
+                        {
+                            "label": "Muscat - Al Seeb",
+                            "value": "46",
+                            "relatedWith": "ASSEEB"
+                        },
+                        {
+                            "label": "Muscat - Muscat Airport",
+                            "value": "47",
+                            "relatedWith": "MUSCATAIRPORT"
+                        },
+                        {
+                            "label": "Muscat - Al Bahja",
+                            "value": "48",
+                            "relatedWith": "ALBAHJA"
+                        },
+                        {
+                            "label": "Muscat - Al Amerat",
+                            "value": "49",
+                            "relatedWith": "ALAMERAT"
+                        },
+                        {
+                            "label": "Muscat - Lulu Darsait",
+                            "value": "50",
+                            "relatedWith": "LULUDARSAIT"
+                        },
+                        {
+                            "label": "Muscat - Al Qurum CC",
+                            "value": "51",
+                            "relatedWith": "ALQURMCC"
+                        },
+                        {
+                            "label": "Muscat - Ruwi",
+                            "value": "52",
+                            "relatedWith": "ALKHOUDH"
+                        },
+                        {
+                            "label": "Muscat - Ghala",
+                            "value": "53",
+                            "relatedWith": "GHALA"
+                        },
+                        {
+                            "label": "Muscat - Al Khoudh",
+                            "value": "54",
+                            "relatedWith": "ALKHOUDH"
+                        }
+                    ],
+                    "resource": "",
+                    "url": "",
+                    "json": "",
+                    "custom": ""
+                },
+                "dataType": "",
+                "idPath": "lp.area",
+                "valueProperty": "",
+                "template": "<span>{{ item.label }}</span>",
+                "refreshOn": "",
+                "refreshOnBlur": "",
+                "clearOnRefresh": false,
+                "searchEnabled": true,
+                "selectThreshold": 0.3,
+                "readOnlyValue": false,
+                "customOptions": {},
+                "useExactSearch": false,
+                "persistent": true,
+                "protected": false,
+                "dbIndex": false,
+                "encrypted": false,
+                "clearOnHide": true,
+                "customDefaultValue": "",
+                "calculateValue": "",
+                "calculateServer": false,
+                "allowCalculateOverride": false,
+                "validateOn": "change",
+                "validate": {
+                    "required": false,
+                    "onlyAvailableItems": false,
+                    "customMessage": "",
+                    "custom": "",
+                    "customPrivate": false,
+                    "json": "",
+                    "strictDateValidation": false,
+                    "multiple": false,
+                    "unique": false
+                },
+                "unique": false,
+                "validateWhenHidden": false,
+                "errorLabel": "",
+                "errors": "",
+                "key": "area",
+                "tags": [],
+                "properties": {},
+                "conditional": {
+                    "show": null,
+                    "when": null,
+                    "eq": "",
+                    "json": [
+                        {
+                            "dependsOn": "wilaya",
+                            "type": "filter",
+                            "op": "eq",
+                            "compareOn": "value",
+                            "value": ""
+                        }
+                    ]
+                },
+                "customConditional": "",
+                "logic": [],
+                "attributes": {},
+                "overlay": {
+                    "style": "",
+                    "page": "",
+                    "left": "",
+                    "top": "",
+                    "width": "",
+                    "height": ""
+                },
+                "type": "select",
+                "indexeddb": {
+                    "filter": {}
+                },
+                "dataGridLabel": false,
+                "lazyLoad": true,
+                "selectFields": "wilaya_id",
+                "searchField": "",
+                "searchDebounce": 0.3,
+                "minSearch": 0,
+                "filter": "",
+                "limit": 100,
+                "noRefreshOnScroll": false,
+                "addResource": false,
+                "reference": false,
+                "authenticate": false,
+                "ignoreCache": false,
+                "redrawOn": "",
+                "input": true,
+                "prefix": "",
+                "suffix": "",
+                "showCharCount": false,
+                "showWordCount": false,
+                "allowMultipleMasks": false,
+                "addons": [],
+                "fuseOptions": {
+                    "include": "score",
+                    "threshold": 0.3
+                },
+                "id": "e2dllut",
+                "defaultValue": null,
+                "stringDefaultValue": null
+            },
+            {
+                "label": "Details",
+                "labelPosition": "top",
+                "placeholder": "",
+                "description": "",
+                "tooltip": "",
+                "prefix": "",
+                "suffix": "",
+                "widget": "",
+                "displayMask": "",
+                "applyMaskOn": "change",
+                "editor": "",
+                "autoExpand": false,
+                "customClass": "",
+                "tabindex": "",
+                "autocomplete": "",
+                "hidden": false,
+                "hideLabel": false,
+                "showWordCount": false,
+                "showCharCount": false,
+                "autofocus": false,
+                "spellcheck": true,
+                "disabled": false,
+                "tableView": true,
+                "modalEdit": false,
+                "multiple": false,
+                "persistent": true,
+                "inputFormat": "html",
+                "protected": false,
+                "dbIndex": false,
+                "case": "",
+                "truncateMultipleSpaces": false,
+                "encrypted": false,
+                "redrawOn": "",
+                "clearOnHide": true,
+                "customDefaultValue": "",
+                "calculateValue": "",
+                "calculateServer": false,
+                "allowCalculateOverride": false,
+                "validateOn": "change",
+                "validate": {
+                    "required": false,
+                    "pattern": "",
+                    "customMessage": "",
+                    "custom": "",
+                    "customPrivate": false,
+                    "json": "",
+                    "minWords": "",
+                    "maxWords": "",
+                    "minLength": null,
+                    "maxLength": null,
+                    "strictDateValidation": false,
+                    "multiple": false,
+                    "unique": false
+                },
+                "unique": false,
+                "validateWhenHidden": false,
+                "errorLabel": "",
+                "errors": "",
+                "key": "details",
+                "tags": [],
+                "properties": {},
+                "conditional": {
+                    "show": null,
+                    "when": null,
+                    "eq": "",
+                    "json": [
+                        {
+                            "dependsOn": "name",
+                            "type": "show",
+                            "op": "eq",
+                            "compareOn": "value",
+                            "value": "Yousef"
+                        },
+                        {
+                            "dependsOn": "name",
+                            "type": "required",
+                            "op": "eq",
+                            "compareOn": "value",
+                            "value": "Yousef"
+                        }
+                    ]
+                },
+                "customConditional": "",
+                "logic": [],
+                "attributes": {},
+                "overlay": {
+                    "style": "",
+                    "page": "",
+                    "left": "",
+                    "top": "",
+                    "width": "",
+                    "height": ""
+                },
+                "type": "textarea",
+                "rows": 3,
+                "wysiwyg": false,
+                "dataGridLabel": false,
+                "input": true,
+                "refreshOn": "",
+                "allowMultipleMasks": false,
+                "addons": [],
+                "mask": false,
+                "inputType": "text",
+                "inputMask": "",
+                "fixedSize": true,
+                "id": "evjjrpw",
+                "defaultValue": null,
+                "stringDefaultValue": null
+            },
+            {
+                "label": "Submit",
+                "action": "url",
+                "showValidations": true,
+                "theme": "primary",
+                "size": "md",
+                "block": true,
+                "leftIcon": "",
+                "rightIcon": "",
+                "shortcut": "",
+                "description": "",
+                "tooltip": "",
+                "customClass": "",
+                "tabindex": "",
+                "disableOnInvalid": true,
+                "hidden": false,
+                "autofocus": false,
+                "disabled": false,
+                "tableView": false,
+                "modalEdit": false,
+                "key": "submit",
+                "tags": [],
+                "properties": {},
+                "conditional": {
+                    "show": null,
+                    "when": null,
+                    "eq": "",
+                    "json": []
+                },
+                "customConditional": "",
+                "logic": [],
+                "attributes": {},
+                "overlay": {
+                    "style": "",
+                    "page": "",
+                    "left": "",
+                    "top": "",
+                    "width": "",
+                    "height": ""
+                },
+                "type": "button",
+                "headers": [
+                    {
+                        "header": "",
+                        "value": ""
+                    }
+                ],
+                "hideLabel": false,
+                "input": true,
+                "placeholder": "",
+                "prefix": "",
+                "suffix": "",
+                "multiple": false,
+                "defaultValue": null,
+                "protected": false,
+                "unique": false,
+                "persistent": false,
+                "clearOnHide": true,
+                "refreshOn": "",
+                "redrawOn": "",
+                "dataGridLabel": true,
+                "labelPosition": "top",
+                "errorLabel": "",
+                "dbIndex": false,
+                "customDefaultValue": "",
+                "calculateValue": "",
+                "calculateServer": false,
+                "widget": {
+                    "type": "input"
+                },
+                "validateOn": "change",
+                "validate": {
+                    "required": false,
+                    "custom": "",
+                    "customPrivate": false,
+                    "strictDateValidation": false,
+                    "multiple": false,
+                    "unique": false
+                },
+                "allowCalculateOverride": false,
+                "encrypted": false,
+                "showCharCount": false,
+                "showWordCount": false,
+                "allowMultipleMasks": false,
+                "addons": [],
+                "id": "e5bb8i",
+                "url": "requests",
+                "stringDefaultValue": null
+            },
+            {
+                "label": "Save as draft",
+                "action": "url",
+                "showValidations": false,
+                "theme": "secondary",
+                "size": "md",
+                "block": true,
+                "leftIcon": "",
+                "rightIcon": "",
+                "shortcut": "",
+                "description": "",
+                "tooltip": "",
+                "customClass": "",
+                "tabindex": "",
+                "disableOnInvalid": false,
+                "hidden": false,
+                "autofocus": false,
+                "disabled": false,
+                "tableView": false,
+                "modalEdit": false,
+                "key": "cancel",
+                "tags": [],
+                "properties": {},
+                "conditional": {
+                    "show": null,
+                    "when": null,
+                    "eq": "",
+                    "json": []
+                },
+                "customConditional": "",
+                "logic": [],
+                "attributes": {},
+                "overlay": {
+                    "style": "",
+                    "page": "",
+                    "left": "",
+                    "top": "",
+                    "width": "",
+                    "height": ""
+                },
+                "type": "button",
+                "url": "drafts",
+                "headers": [
+                    {
+                        "header": "",
+                        "value": ""
+                    }
+                ],
+                "hideLabel": false,
+                "input": true,
+                "stringDefaultValue": null,
+                "placeholder": "",
+                "prefix": "",
+                "suffix": "",
+                "multiple": false,
+                "defaultValue": null,
+                "protected": false,
+                "unique": false,
+                "persistent": false,
+                "clearOnHide": true,
+                "refreshOn": "",
+                "redrawOn": "",
+                "dataGridLabel": true,
+                "labelPosition": "top",
+                "errorLabel": "",
+                "dbIndex": false,
+                "customDefaultValue": "",
+                "calculateValue": "",
+                "calculateServer": false,
+                "widget": {
+                    "type": "input"
+                },
+                "validateOn": "change",
+                "validate": {
+                    "required": false,
+                    "custom": "",
+                    "customPrivate": false,
+                    "strictDateValidation": false,
+                    "multiple": false,
+                    "unique": false
+                },
+                "allowCalculateOverride": false,
+                "encrypted": false,
+                "showCharCount": false,
+                "showWordCount": false,
+                "allowMultipleMasks": false,
+                "addons": [],
+                "id": "eky6g1g"
+            }
+        ],
+        "version": 1
+    },
+    "error": {}
+}
