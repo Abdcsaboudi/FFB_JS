@@ -85,6 +85,16 @@ function createFormComponent(component) {
     if (!component.hidden && !component.hideLabel && component.type !== 'checkbox') {
         const label = document.createElement('label');
         label.textContent = component.label;
+        
+        // Add red star for required fields
+        if (component.validate?.required) {
+            const requiredStar = document.createElement('span');
+            requiredStar.className = 'required-star';
+            requiredStar.textContent = ' *';
+            requiredStar.style.color = 'red';
+            label.appendChild(requiredStar);
+        }
+        
         formGroup.appendChild(label);
     }
 
@@ -128,6 +138,43 @@ function createFormComponent(component) {
             validationMessage.textContent = component.validate.message;
             formGroup.appendChild(validationMessage);
         }
+
+        // Add change event listener for any input that other components depend on
+        const baseInput = input.tagName === 'DIV' ? input.querySelector('input, select, textarea') : input;
+        if (baseInput) {
+            // Initialize form values
+            formValues[component.key] = baseInput.value;
+
+            // Add input event listener if this field is depended upon by other fields
+            if (currentFormData?.data?.components?.some(comp => 
+                comp.conditional?.json?.some(rule => rule.dependsOn === component.key)
+            )) {
+                baseInput.addEventListener('input', function() {
+                    // Clear validation styling
+                    this.classList.remove('invalid');
+                    const errorMessage = this.parentElement.querySelector('.error-message');
+                    if (errorMessage) {
+                        errorMessage.remove();
+                    }
+                    const errorSummary = document.querySelector('.error-summary');
+                    if (errorSummary) {
+                        errorSummary.remove();
+                    }
+
+                    // Update form values
+                    formValues[component.key] = this.value;
+
+                    // Re-evaluate rules for all dependent components
+                    if (currentFormData?.data?.components) {
+                        currentFormData.data.components.forEach(field => {
+                            if (field.conditional?.json?.some(rule => rule.dependsOn === component.key)) {
+                                RuleEngine.evaluateRules(field, currentFormData.data.components, formValues, fieldStates);
+                            }
+                        });
+                    }
+                });
+            }
+        }
     }
 
     return formGroup;
@@ -169,54 +216,131 @@ function createSelectComponent(component) {
 }
 
 function createDateTimeComponent(component) {
-    if (component.type === 'time') {
-        const timeGroup = document.createElement('div');
-        timeGroup.className = 'time-picker-group';
+    const wrapper = document.createElement('div');
+    wrapper.className = 'datetime-wrapper';
 
-        // Time from
-        const fromGroup = document.createElement('div');
-        fromGroup.className = 'form-group';
-        const fromLabel = document.createElement('label');
-        fromLabel.textContent = 'Time from';
-        const fromInput = document.createElement('input');
-        fromInput.type = 'time';
-        fromInput.className = 'form-control';
-        fromInput.id = component.key + '_from';
-        fromInput.name = component.key + '_from';
-        fromGroup.appendChild(fromLabel);
-        fromGroup.appendChild(fromInput);
-
-        // Separator
-        const separator = document.createElement('span');
-        separator.className = 'time-separator';
-        separator.textContent = '→';
-
-        // Time to
-        const toGroup = document.createElement('div');
-        toGroup.className = 'form-group';
-        const toLabel = document.createElement('label');
-        toLabel.textContent = 'Time to';
-        const toInput = document.createElement('input');
-        toInput.type = 'time';
-        toInput.className = 'form-control';
-        toInput.id = component.key + '_to';
-        toInput.name = component.key + '_to';
-        toGroup.appendChild(toLabel);
-        toGroup.appendChild(toInput);
-
-        timeGroup.appendChild(fromGroup);
-        timeGroup.appendChild(separator);
-        timeGroup.appendChild(toGroup);
-
-        return timeGroup;
-    } else {
-        const input = document.createElement('input');
-        input.type = 'date';
-        input.id = component.key;
-        input.name = component.key;
-        input.className = 'form-control';
-        return input;
+    // If both flags are false, return empty wrapper
+    if (!component.enableDate && !component.enableTime) {
+        return wrapper;
     }
+
+    // Create date input if enabled
+    if (component.enableDate) {
+        const dateInput = document.createElement('input');
+        dateInput.type = 'date';
+        dateInput.id = `${component.key}_date`;
+        dateInput.name = `${component.key}_date`;
+        dateInput.className = 'form-control';
+        dateInput.required = component.validate?.required || false;
+        dateInput.disabled = component.disabled || false;
+
+        // Handle min/max dates if provided in datePicker
+        if (component.datePicker?.minDate) {
+            try {
+                // Try to parse the date and format it as YYYY-MM-DD
+                const minDate = new Date(component.datePicker.minDate);
+                if (!isNaN(minDate.getTime())) {
+                    dateInput.min = minDate.toISOString().split('T')[0];
+                }
+            } catch (e) {
+                console.warn('Invalid minDate format:', e);
+            }
+        }
+        if (component.datePicker?.maxDate) {
+            try {
+                // Try to parse the date and format it as YYYY-MM-DD
+                const maxDate = new Date(component.datePicker.maxDate);
+                if (!isNaN(maxDate.getTime())) {
+                    dateInput.max = maxDate.toISOString().split('T')[0];
+                }
+            } catch (e) {
+                console.warn('Invalid maxDate format:', e);
+            }
+        }
+
+        const dateGroup = document.createElement('div');
+        dateGroup.className = 'date-group';
+        if (component.label) {
+            const dateLabel = document.createElement('label');
+            dateLabel.htmlFor = `${component.key}_date`;
+            dateLabel.textContent = 'Date';
+            
+            // Add red star for required date fields
+            if (component.validate?.required) {
+                const requiredStar = document.createElement('span');
+                requiredStar.className = 'required-star';
+                requiredStar.textContent = ' *';
+                requiredStar.style.color = 'red';
+                dateLabel.appendChild(requiredStar);
+            }
+            
+            dateGroup.appendChild(dateLabel);
+        }
+        dateGroup.appendChild(dateInput);
+        wrapper.appendChild(dateGroup);
+    }
+
+    // Create time input if enabled
+    if (component.enableTime) {
+        const timeInput = document.createElement('input');
+        timeInput.type = 'time';
+        timeInput.id = `${component.key}_time`;
+        timeInput.name = `${component.key}_time`;
+        timeInput.className = 'form-control';
+        timeInput.required = component.validate?.required || false;
+        timeInput.disabled = component.disabled || false;
+
+        // Handle 24-hour format
+        if (component.timePicker?.showMeridian === false) {
+            timeInput.step = component.timePicker?.minuteStep || 60;
+        }
+
+        const timeGroup = document.createElement('div');
+        timeGroup.className = 'time-group';
+        if (component.label) {
+            const timeLabel = document.createElement('label');
+            timeLabel.htmlFor = `${component.key}_time`;
+            timeLabel.textContent = 'Time';
+            
+            // Add red star for required time fields
+            if (component.validate?.required) {
+                const requiredStar = document.createElement('span');
+                requiredStar.className = 'required-star';
+                requiredStar.textContent = ' *';
+                requiredStar.style.color = 'red';
+                timeLabel.appendChild(requiredStar);
+            }
+            
+            timeGroup.appendChild(timeLabel);
+        }
+        timeGroup.appendChild(timeInput);
+        wrapper.appendChild(timeGroup);
+    }
+
+    // Add combined value handler
+    wrapper.getValue = function() {
+        const dateValue = component.enableDate ? this.querySelector('input[type="date"]')?.value : '';
+        const timeValue = component.enableTime ? this.querySelector('input[type="time"]')?.value : '';
+        
+        if (dateValue && timeValue) {
+            return `${dateValue}T${timeValue}`;
+        } else if (dateValue) {
+            return dateValue;
+        } else if (timeValue) {
+            return timeValue;
+        }
+        return '';
+    };
+
+    // Add event listeners to update form values
+    const inputs = wrapper.querySelectorAll('input');
+    inputs.forEach(input => {
+        input.addEventListener('input', function() {
+            formValues[component.key] = wrapper.getValue();
+        });
+    });
+
+    return wrapper;
 }
 
 function createNumberComponent(component) {
@@ -296,16 +420,23 @@ function createRadioComponent(component) {
     const radioGroup = document.createElement('div');
     radioGroup.className = 'radio-group';
 
-    component.options.forEach(option => {
+    // Get options from values array first, then fall back to data.values, then options
+    const options = component.values || (component.data && component.data.values) || component.options || [];
+    
+    options.forEach(option => {
         const wrapper = document.createElement('div');
         wrapper.className = 'radio-wrapper';
+        if (component.inline) {
+            wrapper.className += ' radio-inline';
+        }
 
         const input = document.createElement('input');
         input.type = 'radio';
         input.id = `${component.key}_${option.value}`;
         input.name = component.key;
         input.value = option.value;
-        input.checked = option.value === component.defaultValue;
+        input.required = component.validate?.required || false;
+        input.checked = option.value === component.defaultValue || option.value === component.stringDefaultValue;
 
         const label = document.createElement('label');
         label.htmlFor = `${component.key}_${option.value}`;
@@ -414,6 +545,15 @@ function createCheckboxComponent(component) {
     label.htmlFor = component.key;
     label.textContent = component.label;
 
+    // Add red star for required checkboxes
+    if (component.validate?.required) {
+        const requiredStar = document.createElement('span');
+        requiredStar.className = 'required-star';
+        requiredStar.textContent = ' *';
+        requiredStar.style.color = 'red';
+        label.appendChild(requiredStar);
+    }
+
     wrapper.appendChild(input);
     wrapper.appendChild(label);
 
@@ -470,13 +610,135 @@ function handleFormSubmit(event) {
     }
 
     // If validation passes, collect form data
-    const formData = new FormData(event.target);
     const data = {};
     
-    for (let [key, value] of formData.entries()) {
-        data[key] = value;
+    // Collect all form values including custom components
+    currentFormData.data.components.forEach(component => {
+        if (component.type === 'datetime') {
+            // Handle datetime components
+            const dateInput = document.querySelector(`input[name="${component.key}_date"]`);
+            const timeInput = document.querySelector(`input[name="${component.key}_time"]`);
+            
+            let value = '';
+            if (component.enableDate && dateInput) {
+                value = dateInput.value;
+            }
+            if (component.enableTime && timeInput) {
+                if (value) {
+                    value += `T${timeInput.value}`;
+                } else {
+                    value = timeInput.value;
+                }
+            }
+            data[component.key] = value;
+        } else if (component.type === 'radio') {
+            // Handle radio components
+            const selectedRadio = document.querySelector(`input[name="${component.key}"]:checked`);
+            data[component.key] = selectedRadio ? selectedRadio.value : '';
+        } else if (component.type === 'checkbox') {
+            // Handle checkbox components
+            const checkbox = document.querySelector(`input[name="${component.key}"]`);
+            data[component.key] = checkbox ? checkbox.checked : false;
+        } else if (component.type === 'file') {
+            // Handle file components
+            const fileInput = document.querySelector(`input[name="${component.key}"]`);
+            if (fileInput && fileInput.files.length > 0) {
+                data[component.key] = Array.from(fileInput.files).map(file => file.name);
+            } else {
+                data[component.key] = [];
+            }
+        } else {
+            // Handle other components
+            const input = document.querySelector(`[name="${component.key}"]`);
+            if (input) {
+                data[component.key] = input.value;
+            }
+        }
+    });
+
+    // Show the data dialog
+    showFormDataDialog(data);
+}
+
+function showFormDataDialog(data) {
+    // Remove any existing dialog
+    const existingDialog = document.querySelector('.form-data-dialog');
+    if (existingDialog) {
+        existingDialog.remove();
     }
+
+    // Create dialog container
+    const dialogOverlay = document.createElement('div');
+    dialogOverlay.className = 'dialog-overlay';
     
-    console.log('Form submitted with data:', data);
-    // Here you can add your API call to submit the form data
+    const dialog = document.createElement('div');
+    dialog.className = 'form-data-dialog';
+
+    // Create dialog content
+    const title = document.createElement('h2');
+    title.textContent = 'Form Submission Data';
+    dialog.appendChild(title);
+
+    const content = document.createElement('div');
+    content.className = 'dialog-content';
+
+    // Format and display each field
+    Object.entries(data).forEach(([key, value]) => {
+        const field = document.createElement('div');
+        field.className = 'dialog-field';
+
+        // Find the component to get its label
+        const component = currentFormData.data.components.find(comp => comp.key === key);
+        const label = component ? component.label : key;
+
+        // Format the value based on type
+        let displayValue = value;
+        if (Array.isArray(value)) {
+            displayValue = value.join(', ') || 'No files selected';
+        } else if (typeof value === 'boolean') {
+            displayValue = value ? 'Yes' : 'No';
+        } else if (value === '') {
+            displayValue = 'Not provided';
+        }
+
+        field.innerHTML = `
+            <strong>${label}:</strong>
+            <span>${displayValue}</span>
+        `;
+        content.appendChild(field);
+    });
+
+    dialog.appendChild(content);
+
+    // Add action buttons
+    const actions = document.createElement('div');
+    actions.className = 'dialog-actions';
+
+    const confirmBtn = document.createElement('button');
+    confirmBtn.className = 'btn btn-primary';
+    confirmBtn.textContent = 'Confirm';
+    confirmBtn.onclick = () => {
+        dialogOverlay.remove();
+        // Here you can add the actual form submission logic
+        console.log('Form data confirmed:', data);
+    };
+
+    const cancelBtn = document.createElement('button');
+    cancelBtn.className = 'btn btn-outline-primary';
+    cancelBtn.textContent = 'Cancel';
+    cancelBtn.onclick = () => dialogOverlay.remove();
+
+    actions.appendChild(confirmBtn);
+    actions.appendChild(cancelBtn);
+    dialog.appendChild(actions);
+
+    // Add close button
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'dialog-close';
+    closeBtn.innerHTML = '&times;';
+    closeBtn.onclick = () => dialogOverlay.remove();
+    dialog.appendChild(closeBtn);
+
+    dialogOverlay.appendChild(dialog);
+    document.body.appendChild(dialogOverlay);
 } 

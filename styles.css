@@ -266,4 +266,145 @@ select.form-control {
 
 .btn-outline-primary:hover {
     background-color: rgba(255, 87, 34, 0.04);
+}
+
+.datetime-wrapper {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.datetime-wrapper .date-group,
+.datetime-wrapper .time-group {
+    flex: 1;
+}
+
+.datetime-wrapper label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.datetime-wrapper input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.datetime-wrapper input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+/* Responsive design */
+@media (max-width: 576px) {
+    .datetime-wrapper {
+        flex-direction: column;
+    }
+    
+    .datetime-wrapper .date-group,
+    .datetime-wrapper .time-group {
+        width: 100%;
+    }
+}
+
+/* Dialog styles */
+.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.form-data-dialog {
+    background-color: white;
+    border-radius: 8px;
+    padding: 24px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-data-dialog h2 {
+    margin: 0 0 20px 0;
+    color: #333;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.dialog-content {
+    max-height: calc(90vh - 160px);
+    overflow-y: auto;
+    margin-bottom: 20px;
+    padding-right: 16px;
+}
+
+.dialog-field {
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.dialog-field:last-child {
+    border-bottom: none;
+}
+
+.dialog-field strong {
+    display: block;
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.dialog-field span {
+    color: #333;
+    font-size: 16px;
+}
+
+.dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.dialog-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #666;
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+}
+
+.dialog-close:hover {
+    color: #333;
+}
+
+/* Make dialog scrollable on mobile */
+@media (max-width: 576px) {
+    .form-data-dialog {
+        width: 95%;
+        max-height: 80vh;
+        margin: 20px;
+    }
+
+    .dialog-content {
+        max-height: calc(80vh - 180px);
+    }
 } 

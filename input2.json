@@ -640,8 +640,27 @@
                 "type": "radio",
                 "dataGridLabel": false,
                 "data": {
-                    "url": ""
+                    "values": [
+                        {
+                            "label": "Option 1",
+                            "value": "option1"
+                        },
+                        {
+                            "label": "Option 2",
+                            "value": "option2"
+                        }
+                    ]
                 },
+                "options": [
+                    {
+                        "label": "Option 1",
+                        "value": "option1"
+                    },
+                    {
+                        "label": "Option 2",
+                        "value": "option2"
+                    }
+                ],
                 "template": "<span>{{ item.label }}</span>",
                 "authenticate": false,
                 "ignoreCache": false,
@@ -1217,7 +1236,7 @@
                             "relatedWith": "07"
                         },
                         {
-                            "label": "Al Masanaâ€™h",
+                            "label": "Al Masana'h",
                             "value": "ALMASANAH",
                             "relatedWith": "07"
                         },
