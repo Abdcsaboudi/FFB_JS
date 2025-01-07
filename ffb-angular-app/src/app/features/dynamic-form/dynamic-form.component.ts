@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormDataService } from '../../services/form-data.service';
@@ -60,18 +60,17 @@ import { Router } from '@angular/router';
               </div>
 
               <!-- Select Input -->
-              <select *ngIf="component.type === 'select'"
-                      [id]="component.key"
-                      [formControlName]="component.key"
-                      class="form-control"
-                      [class.invalid]="shouldShowError(component.key)"
-                      [disabled]="getFieldDisabled(component)"
-                      #inputField>
-                <option value="" [disabled]="true">{{ component.placeholder || 'Select an option' }}</option>
-                <option *ngFor="let option of component.data?.values" [value]="option.value">
-                  {{ option.label }}
-                </option>
-              </select>
+              <div *ngIf="component.type === 'select'" class="select-wrapper">
+                <div class="selected-options" (click)="openSelectDialog(component)">
+                  <span *ngIf="!getSelectedLabels(component).length">
+                    {{ component.placeholder || 'Select an option' }}
+                  </span>
+                  <span *ngIf="getSelectedLabels(component).length" class="selected-values">
+                    {{ getSelectedLabels(component) }}
+                  </span>
+                  <span class="dropdown-icon"></span>
+                </div>
+              </div>
 
               <!-- DateTime Input -->
               <div *ngIf="component.type === 'datetime'" class="datetime-wrapper">
@@ -150,8 +149,8 @@ import { Router } from '@angular/router';
               </div>
 
               <!-- Radio Input -->
-              <div *ngIf="component.type === 'radio'" class="radio-group">
-                <div *ngFor="let option of component.data?.values" class="radio-wrapper">
+              <div *ngIf="component.type === 'radio'" class="radio-group" [ngClass]="{'radio-inline': component.inline}">
+                <div *ngFor="let option of component.values" class="radio-wrapper">
                   <input type="radio"
                          [id]="component.key + '_' + option.value"
                          [name]="component.key"
@@ -225,6 +224,32 @@ import { Router } from '@angular/router';
         </div>
       </div>
     </div>
+
+    <!-- Select Dialog -->
+    <div *ngIf="showSelectDialog" class="dialog-overlay" (click)="closeSelectDialog()">
+      <div class="select-dialog" (click)="$event.stopPropagation()">
+        <div class="dialog-header">
+          <h3>{{ activeSelectComponent?.label || 'Select Options' }}</h3>
+          <button class="dialog-close" (click)="closeSelectDialog()">&times;</button>
+        </div>
+        
+        <div class="dialog-content">
+          <div class="select-options">
+            <div *ngFor="let option of activeSelectComponent?.data?.values" 
+                 class="select-option" 
+                 [class.selected]="isOptionSelected(activeSelectComponent, option.value)"
+                 (click)="toggleOption(activeSelectComponent, option.value)">
+              <span class="checkbox-indicator"></span>
+              {{ option.label }}
+            </div>
+          </div>
+        </div>
+        
+        <div class="dialog-actions">
+          <button class="submit-button" (click)="closeSelectDialog()">Done</button>
+        </div>
+      </div>
+    </div>
   `,
   styleUrls: ['./dynamic-form.component.css']
 })
@@ -239,6 +264,9 @@ export class DynamicFormComponent implements OnInit {
   isDragging = false;
   private previousValues: any = {};
   private originalSelectOptions: { [key: string]: any[] } = {};
+  openSelect: string | null = null;
+  showSelectDialog = false;
+  activeSelectComponent: any = null;
 
   constructor(
     private formDataService: FormDataService,
@@ -571,8 +599,16 @@ export class DynamicFormComponent implements OnInit {
 
       let displayValue = value;
       if (component.type === 'select') {
-        const option = component.data.values.find((opt: any) => opt.value === value);
-        displayValue = option ? option.label : value;
+        if (component.multiple && Array.isArray(value)) {
+          // Handle multiple selections
+          displayValue = value
+            .map(v => component.data.values.find((opt: any) => opt.value === v)?.label || v)
+            .join(', ');
+        } else {
+          // Handle single selection
+          const option = component.data.values.find((opt: any) => opt.value === value);
+          displayValue = option ? option.label : value;
+        }
       } else if (component.type === 'checkbox') {
         displayValue = value ? 'Yes' : 'No';
       } else if (component.type === 'file') {
@@ -886,5 +922,79 @@ export class DynamicFormComponent implements OnInit {
   // Update the template binding for required state
   getFieldRequired(component: any): boolean {
     return this.fieldStates[component.key]?.required || false;
+  }
+
+  // Get formatted selected labels
+  getSelectedLabels(component: any): string {
+    const value = this.form.get(component.key)?.value;
+    if (!value) return '';
+    
+    const values = Array.isArray(value) ? value : [value];
+    return values
+      .map(v => component.data?.values.find((opt: any) => opt.value === v)?.label || v)
+      .join(', ');
+  }
+
+  // Toggle select dropdown
+  toggleSelect(event: Event, selectElement: HTMLSelectElement) {
+    event.stopPropagation();
+    if (this.openSelect === selectElement.id) {
+      this.openSelect = null;
+    } else {
+      this.openSelect = selectElement.id;
+      selectElement.focus();
+    }
+  }
+
+  // Handle select blur
+  onSelectBlur() {
+    // Add a small delay to allow for option selection
+    setTimeout(() => {
+      this.openSelect = null;
+    }, 200);
+  }
+
+  // Add click handler to close select when clicking outside
+  @HostListener('document:click')
+  onDocumentClick() {
+    this.openSelect = null;
+  }
+
+  openSelectDialog(component: any) {
+    if (this.getFieldDisabled(component)) return;
+    this.activeSelectComponent = component;
+    this.showSelectDialog = true;
+  }
+
+  closeSelectDialog() {
+    this.showSelectDialog = false;
+    this.activeSelectComponent = null;
+  }
+
+  isOptionSelected(component: any, value: any): boolean {
+    const currentValue = this.form.get(component.key)?.value;
+    if (component.multiple) {
+      return Array.isArray(currentValue) && currentValue.includes(value);
+    }
+    return currentValue === value;
+  }
+
+  toggleOption(component: any, value: any) {
+    const control = this.form.get(component.key);
+    if (!control) return;
+
+    if (component.multiple) {
+      const currentValues = Array.isArray(control.value) ? control.value : [];
+      const valueIndex = currentValues.indexOf(value);
+      
+      if (valueIndex === -1) {
+        control.setValue([...currentValues, value]);
+      } else {
+        control.setValue(currentValues.filter((v: any) => v !== value));
+      }
+    } else {
+      control.setValue(value);
+      this.closeSelectDialog();
+    }
   }
 }
