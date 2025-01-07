@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
               <!-- Label for non-checkbox fields -->
               <label *ngIf="component.type !== 'checkbox'" [for]="component.key">
                 {{ component.label }}
-                <span class="required-star" *ngIf="component.validate?.required">*</span>
+                <span class="required-star" *ngIf="getFieldRequired(component)">*</span>
               </label>
 
               <!-- File Input -->
@@ -28,13 +28,15 @@ import { Router } from '@angular/router';
                        [accept]="component.fileTypes?.join(',')"
                        (change)="onFileSelected($event, component.key)"
                        class="file-input"
+                       [disabled]="getFieldDisabled(component)"
                        #fileInput>
                 <div class="file-upload-ui" 
-                     (click)="fileInput.click()"
-                     (dragover)="onDragOver($event)"
-                     (dragleave)="onDragLeave($event)"
-                     (drop)="onDrop($event, component.key)"
-                     [class.drag-over]="isDragging">
+                     (click)="!getFieldDisabled(component) && fileInput.click()"
+                     (dragover)="!getFieldDisabled(component) && onDragOver($event)"
+                     (dragleave)="!getFieldDisabled(component) && onDragLeave($event)"
+                     (drop)="!getFieldDisabled(component) && onDrop($event, component.key)"
+                     [class.drag-over]="isDragging"
+                     [class.disabled]="getFieldDisabled(component)">
                   <div class="file-upload-placeholder" *ngIf="!getFileName(component.key)">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -63,6 +65,7 @@ import { Router } from '@angular/router';
                       [formControlName]="component.key"
                       class="form-control"
                       [class.invalid]="shouldShowError(component.key)"
+                      [disabled]="getFieldDisabled(component)"
                       #inputField>
                 <option value="" [disabled]="true">{{ component.placeholder || 'Select an option' }}</option>
                 <option *ngFor="let option of component.data?.values" [value]="option.value">
@@ -79,6 +82,7 @@ import { Router } from '@angular/router';
                          [formControlName]="component.key + '_date'"
                          class="form-control"
                          [class.invalid]="shouldShowError(component.key + '_date')"
+                         [disabled]="getFieldDisabled(component)"
                          #inputField>
                 </div>
 
@@ -89,6 +93,7 @@ import { Router } from '@angular/router';
                          [formControlName]="component.key + '_time'"
                          class="form-control"
                          [class.invalid]="shouldShowError(component.key + '_time')"
+                         [disabled]="getFieldDisabled(component)"
                          #inputField>
                 </div>
               </div>
@@ -102,6 +107,7 @@ import { Router } from '@angular/router';
                        class="form-control"
                        [class.invalid]="shouldShowError(component.key)"
                        [placeholder]="component.placeholder || ''"
+                       [disabled]="getFieldDisabled(component)"
                        #inputField>
                 <span *ngIf="component.suffix" class="input-group-text">{{ component.suffix }}</span>
               </div>
@@ -114,6 +120,7 @@ import { Router } from '@angular/router';
                      class="form-control"
                      [class.invalid]="shouldShowError(component.key)"
                      [placeholder]="component.placeholder || ''"
+                     [disabled]="getFieldDisabled(component)"
                      #inputField>
 
               <!-- Textarea -->
@@ -124,6 +131,7 @@ import { Router } from '@angular/router';
                        [class.invalid]="shouldShowError(component.key)"
                        [placeholder]="component.placeholder || ''"
                        [rows]="component.rows || 3"
+                       [disabled]="getFieldDisabled(component)"
                        #inputField></textarea>
 
               <!-- Checkbox -->
@@ -133,10 +141,11 @@ import { Router } from '@angular/router';
                        [formControlName]="component.key"
                        class="form-check-input"
                        [class.invalid]="shouldShowError(component.key)"
+                       [disabled]="getFieldDisabled(component)"
                        #inputField>
                 <label class="form-check-label" [for]="component.key">
                   {{ component.label }}
-                  <span class="required-star" *ngIf="component.validate?.required">*</span>
+                  <span class="required-star" *ngIf="getFieldRequired(component)">*</span>
                 </label>
               </div>
 
@@ -149,7 +158,8 @@ import { Router } from '@angular/router';
                          [value]="option.value"
                          [formControlName]="component.key"
                          class="form-check-input"
-                         [class.invalid]="shouldShowError(component.key)">
+                         [class.invalid]="shouldShowError(component.key)"
+                         [disabled]="getFieldDisabled(component)">
                   <label class="form-check-label" [for]="component.key + '_' + option.value">
                     {{ option.label }}
                   </label>
@@ -227,6 +237,8 @@ export class DynamicFormComponent implements OnInit {
   showConfirmDialog = false;
   fileData: { [key: string]: File } = {};
   isDragging = false;
+  private previousValues: any = {};
+  private originalSelectOptions: { [key: string]: any[] } = {};
 
   constructor(
     private formDataService: FormDataService,
@@ -240,8 +252,176 @@ export class DynamicFormComponent implements OnInit {
     this.formDataService.formData$.subscribe(data => {
       if (data) {
         this.formData = data;
+        this.storeOriginalSelectOptions();
         this.initializeForm();
+        this.setupRuleEvaluation();
       }
+    });
+  }
+
+  private storeOriginalSelectOptions() {
+    console.log('Storing original select options');
+    this.formData.data.components.forEach((component: any) => {
+      if (component.type === 'select' && component.data?.values) {
+        console.log('Storing options for', component.key, component.data.values);
+        this.originalSelectOptions[component.key] = [...component.data.values];
+      }
+    });
+    console.log('Stored original options:', this.originalSelectOptions);
+  }
+
+  private filterSelectOptions(component: any, filterRule: any, formValues: any) {
+    console.log('Filtering select options:', {
+      componentKey: component.key,
+      dependentField: filterRule.dependentField,
+      formValues,
+      originalOptions: this.originalSelectOptions[component.key]
+    });
+
+    if (!this.originalSelectOptions[component.key]) {
+      console.warn('No original options found for', component.key);
+      return;
+    }
+
+    const dependentValue = formValues[filterRule.dependentField];
+    const originalOptions = this.originalSelectOptions[component.key];
+
+    console.log('Dependent value:', dependentValue);
+
+    // Reset if no dependent value
+    if (!dependentValue && dependentValue !== 0) {
+      console.log('No dependent value, resetting', component.key);
+      this.resetSelect(component);
+      this.resetDependentSelects(component.key);
+      return;
+    }
+
+    // Filter options based on the dependent value
+    const filteredOptions = originalOptions.filter(option => {
+      if (!option.value) {
+        console.log('Keeping placeholder option:', option);
+        return true; // Keep placeholder options
+      }
+
+      // Check if the option should be shown based on the dependent value
+      const shouldKeep = option.relatedWith === dependentValue;
+      console.log('Filtering option:', {
+        value: option.value,
+        relatedWith: option.relatedWith,
+        dependentValue,
+        shouldKeep
+      });
+      return shouldKeep;
+    });
+
+    console.log('Filtered options:', filteredOptions);
+
+    // Update the component's options
+    component.data.values = filteredOptions;
+
+    // If the current selection is not in filtered options, reset this and dependent fields
+    const control = this.form.get(component.key);
+    if (control) {
+      const currentValue = control.value;
+      console.log('Current value check:', {
+        componentKey: component.key,
+        currentValue,
+        hasValidOption: filteredOptions.some(opt => opt.value === currentValue)
+      });
+
+      if (currentValue && !filteredOptions.some(opt => opt.value === currentValue)) {
+        console.log('Resetting due to invalid selection');
+        this.resetSelect(component);
+        this.resetDependentSelects(component.key);
+      } else if (currentValue) {
+        console.log('Filtering dependent fields for', component.key);
+        this.filterDependentFields(component.key, currentValue);
+      }
+    }
+  }
+
+  private filterDependentFields(parentKey: string, parentValue: any) {
+    console.log('Finding dependent fields for', parentKey);
+    
+    // Find all components that depend on this field
+    const dependentComponents = this.formData.data.components.filter((comp: any) => {
+      const hasDependency = comp.type === 'select' && 
+        comp.conditional?.json?.some((rule: { type: string; dependentField: string }) => 
+          rule.type === 'filter' && rule.dependentField === parentKey
+        );
+      console.log('Checking component:', {
+        key: comp.key,
+        hasDependency
+      });
+      return hasDependency;
+    });
+
+    console.log('Found dependent components:', dependentComponents.map((c: any) => c.key));
+
+    // Apply filtering to each dependent component
+    dependentComponents.forEach((comp: any) => {
+      const filterRule = comp.conditional.json.find((rule: { type: string; dependentField: string }) => 
+        rule.type === 'filter' && rule.dependentField === parentKey
+      );
+      
+      if (filterRule) {
+        console.log('Applying filter rule:', {
+          component: comp.key,
+          rule: filterRule
+        });
+        // Create a temporary form values object with the current parent value
+        const tempFormValues = { ...this.form.value, [parentKey]: parentValue };
+        this.filterSelectOptions(comp, filterRule, tempFormValues);
+      }
+    });
+  }
+
+  private resetSelect(component: any) {
+    // Reset form control
+    const control = this.form.get(component.key);
+    if (control) {
+      control.setValue('', { emitEvent: false });
+    }
+
+    // Reset component data while preserving original values
+    if (component.data) {
+      const originalValues = [...this.originalSelectOptions[component.key]];
+      component.data = {
+        values: originalValues,
+        url: component.data.url || '',
+        headers: component.data.headers || [],
+        custom: {},
+        selected: null,
+        filtered: false,
+        filter: null,
+        sort: null,
+        limit: component.data.limit || null
+      };
+    }
+
+    // Reset validation states
+    if (component.validate) {
+      component.validate.customMessage = '';
+      component.validate.custom = '';
+      component.validate.customPrivate = false;
+      component.validate.json = '';
+    }
+  }
+
+  private resetDependentSelects(parentKey: string) {
+    // Find all select components that depend on this one
+    const dependentComponents = this.formData.data.components.filter((comp: any) => 
+      comp.type === 'select' && 
+      comp.conditional?.json?.some((rule: { type: string; dependsOn: string }) => 
+        rule.type === 'filter' && rule.dependsOn === parentKey
+      )
+    );
+
+    // Reset each dependent select
+    dependentComponents.forEach((comp: any) => {
+      this.resetSelect(comp);
+      // Recursively reset components that depend on this one
+      this.resetDependentSelects(comp.key);
     });
   }
 
@@ -277,15 +457,12 @@ export class DynamicFormComponent implements OnInit {
           }
           break;
         case 'datetime':
-          // Only add date control if enabled
           if (component.enableDate) {
             group[component.key + '_date'] = ['', component.validate?.required ? [Validators.required] : []];
           }
-          // Only add time control if enabled
           if (component.enableTime) {
             group[component.key + '_time'] = ['', component.validate?.required ? [Validators.required] : []];
           }
-          // Skip the rest of the switch for datetime
           return;
         case 'textfield':
         case 'textarea':
@@ -300,7 +477,6 @@ export class DynamicFormComponent implements OnInit {
           }
           break;
         case 'file':
-          // For file inputs, we'll store a string value in the form
           defaultValue = '';
           break;
       }
@@ -309,6 +485,33 @@ export class DynamicFormComponent implements OnInit {
     });
 
     this.form = this.fb.group(group);
+
+    // Subscribe to individual form control value changes
+    Object.keys(this.form.controls).forEach(key => {
+      const control = this.form.get(key);
+      if (control) {
+        control.valueChanges.subscribe(value => {
+          // Evaluate rules for all components that might depend on this field
+          this.formData.data.components.forEach((component: any) => {
+            if (component.conditional?.json) {
+              const dependsOnThisField = component.conditional.json.some(
+                (rule: any) => rule.dependsOn === key
+              );
+              if (dependsOnThisField) {
+                this.evaluateRules(component, this.form.value);
+              }
+            }
+          });
+        });
+      }
+    });
+
+    // Initial rule evaluation
+    this.formData.data.components.forEach((component: any) => {
+      if (component.conditional?.json) {
+        this.evaluateRules(component, this.form.value);
+      }
+    });
   }
 
   onFileSelected(event: any, key: string) {
@@ -470,5 +673,218 @@ export class DynamicFormComponent implements OnInit {
       parts.push(formValue[component.key + '_time']);
     }
     return parts.join(' ');
+  }
+
+  setupRuleEvaluation() {
+    // Subscribe to value changes of all form controls
+    this.form.valueChanges.subscribe(values => {
+      // Find which field changed
+      const changedField = Object.keys(values).find(key => 
+        values[key] !== this.previousValues[key]
+      );
+
+      if (changedField) {
+        // Only evaluate rules for components that depend on the changed field
+        this.formData.data.components.forEach((component: any) => {
+          if (component.conditional?.json) {
+            const dependsOnChangedField = component.conditional.json.some(
+              (rule: any) => rule.dependsOn === changedField
+            );
+            if (dependsOnChangedField) {
+              this.evaluateRules(component, values);
+            }
+          }
+        });
+      }
+
+      // Update previous values
+      this.previousValues = { ...values };
+    });
+  }
+
+  evaluateRules(component: any, formValues: any) {
+    if (!component.conditional?.json) return;
+    
+    const rules = component.conditional.json;
+    let showResult = true;
+    let requiredResult = false;
+    
+    console.log('Evaluating rules for component:', component.key);
+    console.log('Current form values:', formValues);
+    console.log('Rules:', rules);
+    
+    rules.forEach((rule: { 
+      dependentField: string; 
+      type: string; 
+      operation: string; 
+      value: any;
+      compareOn?: string;
+    }) => {
+      const dependentValue = formValues[rule.dependentField];
+
+      // Handle filter rule type
+      if (rule.type === 'filter') {
+        this.filterSelectOptions(component, rule, formValues);
+        return;
+      }
+
+      let ruleResult = false;
+
+      // Handle empty value cases
+      if (!dependentValue && dependentValue !== 0) {
+        if (rule.type === 'show') {
+          showResult = false;
+        }
+        return;
+      }
+
+      // Convert values for comparison
+      const ruleValue = rule.value;
+      let compareValue = dependentValue;
+
+      // For numeric comparisons, ensure we're comparing numbers
+      if (['lt', 'le', 'gt', 'ge'].includes(rule.operation)) {
+        compareValue = parseFloat(dependentValue);
+      }
+
+      switch (rule.operation) {
+        case 'eq':
+          ruleResult = compareValue === ruleValue;
+          break;
+        case 'ne':
+          ruleResult = compareValue !== ruleValue;
+          break;
+        case 'lt':
+          ruleResult = compareValue < parseFloat(ruleValue);
+          break;
+        case 'le':
+          ruleResult = compareValue <= parseFloat(ruleValue);
+          break;
+        case 'gt':
+          ruleResult = compareValue > parseFloat(ruleValue);
+          break;
+        case 'ge':
+          ruleResult = compareValue >= parseFloat(ruleValue);
+          break;
+        case 'contains':
+          const upperCompareValue = String(compareValue || '').toUpperCase();
+          const upperRuleValue = String(ruleValue || '').toUpperCase();
+          ruleResult = upperCompareValue.includes(upperRuleValue);
+          break;
+      }
+
+      // Apply the rule effect
+      switch (rule.type) {
+        case 'show':
+          showResult = showResult && ruleResult;
+          break;
+        case 'hide':
+          showResult = showResult && !ruleResult;
+          break;
+        case 'required':
+          requiredResult = requiredResult || ruleResult;
+          break;
+        case 'disable':
+          this.fieldStates[component.key].disabled = ruleResult;
+          break;
+        case 'enable':
+          this.fieldStates[component.key].disabled = !ruleResult;
+          break;
+      }
+    });
+
+    // Apply final results
+    console.log('Final results for', component.key, ':', {
+      show: showResult,
+      required: requiredResult
+    });
+
+    this.applyRule(component, 'show', showResult);
+    if (rules.some((rule: { type: string }) => rule.type === 'required')) {
+      this.applyRule(component, 'required', requiredResult);
+    }
+  }
+
+  private applyRule(component: any, ruleType: string, result: boolean) {
+    // Ensure the field state exists
+    if (!this.fieldStates[component.key]) {
+      this.fieldStates[component.key] = {
+        hidden: false,
+        disabled: false,
+        required: component.validate?.required || false
+      };
+    }
+
+    const control = this.form.get(component.key);
+    if (!control) return;
+
+    switch (ruleType) {
+      case 'show':
+        this.fieldStates[component.key].hidden = !result;
+        if (!result) {
+          // Clear value when hiding
+          control.setValue('', { emitEvent: false });
+        }
+        break;
+      case 'hide':
+        this.fieldStates[component.key].hidden = result;
+        if (result) {
+          // Clear value when hiding
+          control.setValue('', { emitEvent: false });
+        }
+        break;
+      case 'disable':
+        this.fieldStates[component.key].disabled = result;
+        if (result) {
+          control.disable({ emitEvent: false });
+        } else {
+          control.enable({ emitEvent: false });
+        }
+        break;
+      case 'enable':
+        this.fieldStates[component.key].disabled = !result;
+        if (result) {
+          control.enable({ emitEvent: false });
+        } else {
+          control.disable({ emitEvent: false });
+        }
+        break;
+      case 'required':
+        this.fieldStates[component.key].required = result;
+        this.updateValidators(component, control, result);
+        break;
+    }
+  }
+
+  private updateValidators(component: any, control: any, required: boolean) {
+    const validators = [];
+    
+    if (required) {
+      validators.push(Validators.required);
+    }
+    
+    // Preserve other validators
+    if (component.validate?.pattern) {
+      validators.push(Validators.pattern(component.validate.pattern));
+    }
+    if (component.validate?.minLength) {
+      validators.push(Validators.minLength(component.validate.minLength));
+    }
+    if (component.validate?.maxLength) {
+      validators.push(Validators.maxLength(component.validate.maxLength));
+    }
+    
+    control.setValidators(validators);
+    control.updateValueAndValidity({ emitEvent: false });
+  }
+
+  // Update the template binding for disabled state
+  getFieldDisabled(component: any): boolean {
+    return this.fieldStates[component.key]?.disabled || false;
+  }
+
+  // Update the template binding for required state
+  getFieldRequired(component: any): boolean {
+    return this.fieldStates[component.key]?.required || false;
   }
 }
