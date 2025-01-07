@@ -997,15 +997,13 @@ input[type="date"] {
 }
 
 .dialog-content {
-  padding: 1rem;
+  padding: 1rem 0;
   overflow-y: auto;
   max-height: 60vh;
 }
 
 .select-options {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  padding: 0 1rem;
 }
 
 .select-option {
@@ -1092,4 +1090,44 @@ input[type="date"] {
   overflow: hidden;
   text-overflow: ellipsis;
   padding-right: 20px;
+}
+
+/* Search Input Styles */
+.search-container {
+  position: relative;
+  margin-bottom: 1rem;
+  padding: 0 1rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.5rem 2.5rem 0.5rem 1rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 1rem;
+  line-height: 1.5;
+  transition: border-color 0.15s ease-in-out;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #FF5722;
+  box-shadow: 0 0 0 0.2rem rgba(255, 87, 34, 0.25);
+}
+
+.search-icon {
+  position: absolute;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+  pointer-events: none;
+}
+
+/* No Results Message */
+.no-results {
+  padding: 1rem;
+  text-align: center;
+  color: #666;
+  font-style: italic;
 }

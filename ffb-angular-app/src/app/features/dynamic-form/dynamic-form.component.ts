@@ -1,13 +1,13 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormsModule } from '@angular/forms';
 import { FormDataService } from '../../services/form-data.service';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dynamic-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   template: `
     <div class="dynamic-form-container">
       <h2>Event Form</h2>
@@ -234,13 +234,31 @@ import { Router } from '@angular/router';
         </div>
         
         <div class="dialog-content">
+          <!-- Search Input -->
+          <div class="search-container" *ngIf="activeSelectComponent?.searchEnabled">
+            <input type="text" 
+                   [(ngModel)]="searchText" 
+                   placeholder="Search options..."
+                   class="search-input"
+                   (input)="onSearch($event)">
+            <span class="search-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </span>
+          </div>
+
           <div class="select-options">
-            <div *ngFor="let option of activeSelectComponent?.data?.values" 
+            <div *ngFor="let option of getFilteredOptions()" 
                  class="select-option" 
                  [class.selected]="isOptionSelected(activeSelectComponent, option.value)"
                  (click)="toggleOption(activeSelectComponent, option.value)">
               <span class="checkbox-indicator"></span>
               {{ option.label }}
+            </div>
+            <div *ngIf="getFilteredOptions().length === 0" class="no-results">
+              No matching options found
             </div>
           </div>
         </div>
@@ -267,6 +285,7 @@ export class DynamicFormComponent implements OnInit {
   openSelect: string | null = null;
   showSelectDialog = false;
   activeSelectComponent: any = null;
+  searchText: string = '';
 
   constructor(
     private formDataService: FormDataService,
@@ -964,6 +983,7 @@ export class DynamicFormComponent implements OnInit {
     if (this.getFieldDisabled(component)) return;
     this.activeSelectComponent = component;
     this.showSelectDialog = true;
+    this.searchText = ''; // Reset search when opening dialog
   }
 
   closeSelectDialog() {
@@ -996,5 +1016,24 @@ export class DynamicFormComponent implements OnInit {
       control.setValue(value);
       this.closeSelectDialog();
     }
+  }
+
+  onSearch(event: Event) {
+    // The search is handled automatically through the getFilteredOptions method
+    // but you could add additional logic here if needed
+  }
+
+  getFilteredOptions(): any[] {
+    if (!this.activeSelectComponent?.data?.values) return [];
+    
+    const options = this.activeSelectComponent.data.values;
+    if (!this.searchText || !this.activeSelectComponent.searchEnabled) {
+      return options;
+    }
+
+    const searchTerm = this.searchText.toLowerCase();
+    return options.filter((option: any) => 
+      option.label.toLowerCase().includes(searchTerm)
+    );
   }
 }
