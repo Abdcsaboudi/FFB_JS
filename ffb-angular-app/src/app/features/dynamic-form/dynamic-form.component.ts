@@ -4,6 +4,23 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormsModule, F
 import { FormDataService } from '../../services/form-data.service';
 import { RuleEngineService } from '../../core/services/rule-engine.service';
 import { Router } from '@angular/router';
+import { debounceTime } from 'rxjs/operators';
+
+interface FormComponent {
+  key: string;
+  type: string;
+  validate?: {
+    required?: boolean;
+  };
+  disabled?: boolean;
+  defaultValue?: any;
+  conditional?: {
+    json?: any[];
+  };
+  data?: {
+    values: any[];
+  };
+}
 
 @Component({
   selector: 'app-dynamic-form',
@@ -275,6 +292,7 @@ export class DynamicFormComponent implements OnInit {
   isDragging = false;
   private previousValues: any = {};
   private originalSelectOptions: { [key: string]: any[] } = {};
+  private isEvaluatingRules = false;
   openSelect: string | null = null;
   showSelectDialog = false;
   activeSelectComponent: any = null;
@@ -293,184 +311,22 @@ export class DynamicFormComponent implements OnInit {
     this.formDataService.formData$.subscribe(data => {
       if (data) {
         this.formData = data;
-        this.storeOriginalSelectOptions();
         this.initializeForm();
-        this.setupRuleEvaluation();
       }
-    });
-  }
-
-  private storeOriginalSelectOptions() {
-    console.log('Storing original select options');
-    this.formData.data.components.forEach((component: any) => {
-      if (component.type === 'select' && component.data?.values) {
-        console.log('Storing options for', component.key, component.data.values);
-        this.originalSelectOptions[component.key] = [...component.data.values];
-      }
-    });
-    console.log('Stored original options:', this.originalSelectOptions);
-  }
-
-  private filterSelectOptions(component: any, filterRule: any, formValues: any) {
-    console.log('Filtering select options:', {
-      componentKey: component.key,
-      dependentField: filterRule.dependentField,
-      formValues,
-      originalOptions: this.originalSelectOptions[component.key]
-    });
-
-    if (!this.originalSelectOptions[component.key]) {
-      console.warn('No original options found for', component.key);
-      return;
-    }
-
-    const dependentValue = formValues[filterRule.dependentField];
-    const originalOptions = this.originalSelectOptions[component.key];
-
-    console.log('Dependent value:', dependentValue);
-
-    // Reset if no dependent value
-    if (!dependentValue && dependentValue !== 0) {
-      console.log('No dependent value, resetting', component.key);
-      this.resetSelect(component);
-      this.resetDependentSelects(component.key);
-      return;
-    }
-
-    // Filter options based on the dependent value
-    const filteredOptions = originalOptions.filter(option => {
-      if (!option.value) {
-        console.log('Keeping placeholder option:', option);
-        return true; // Keep placeholder options
-      }
-
-      // Check if the option should be shown based on the dependent value
-      const shouldKeep = option.relatedWith === dependentValue;
-      console.log('Filtering option:', {
-        value: option.value,
-        relatedWith: option.relatedWith,
-        dependentValue,
-        shouldKeep
-      });
-      return shouldKeep;
-    });
-
-    console.log('Filtered options:', filteredOptions);
-
-    // Update the component's options
-    component.data.values = filteredOptions;
-
-    // If the current selection is not in filtered options, reset this and dependent fields
-    const control = this.form.get(component.key);
-    if (control) {
-      const currentValue = control.value;
-      console.log('Current value check:', {
-        componentKey: component.key,
-        currentValue,
-        hasValidOption: filteredOptions.some(opt => opt.value === currentValue)
-      });
-
-      if (currentValue && !filteredOptions.some(opt => opt.value === currentValue)) {
-        console.log('Resetting due to invalid selection');
-        this.resetSelect(component);
-        this.resetDependentSelects(component.key);
-      } else if (currentValue) {
-        console.log('Filtering dependent fields for', component.key);
-        this.filterDependentFields(component.key, currentValue);
-      }
-    }
-  }
-
-  private filterDependentFields(parentKey: string, parentValue: any) {
-    console.log('Finding dependent fields for', parentKey);
-    
-    // Find all components that depend on this field
-    const dependentComponents = this.formData.data.components.filter((comp: any) => {
-      const hasDependency = comp.type === 'select' && 
-        comp.conditional?.json?.some((rule: { type: string; dependentField: string }) => 
-          rule.type === 'filter' && rule.dependentField === parentKey
-        );
-      console.log('Checking component:', {
-        key: comp.key,
-        hasDependency
-      });
-      return hasDependency;
-    });
-
-    console.log('Found dependent components:', dependentComponents.map((c: any) => c.key));
-
-    // Apply filtering to each dependent component
-    dependentComponents.forEach((comp: any) => {
-      const filterRule = comp.conditional.json.find((rule: { type: string; dependentField: string }) => 
-        rule.type === 'filter' && rule.dependentField === parentKey
-      );
-      
-      if (filterRule) {
-        console.log('Applying filter rule:', {
-          component: comp.key,
-          rule: filterRule
-        });
-        // Create a temporary form values object with the current parent value
-        const tempFormValues = { ...this.form.value, [parentKey]: parentValue };
-        this.filterSelectOptions(comp, filterRule, tempFormValues);
-      }
-    });
-  }
-
-  private resetSelect(component: any) {
-    // Reset form control
-    const control = this.form.get(component.key);
-    if (control) {
-      control.setValue('', { emitEvent: false });
-    }
-
-    // Reset component data while preserving original values
-    if (component.data) {
-      const originalValues = [...this.originalSelectOptions[component.key]];
-      component.data = {
-        values: originalValues,
-        url: component.data.url || '',
-        headers: component.data.headers || [],
-        custom: {},
-        selected: null,
-        filtered: false,
-        filter: null,
-        sort: null,
-        limit: component.data.limit || null
-      };
-    }
-
-    // Reset validation states
-    if (component.validate) {
-      component.validate.customMessage = '';
-      component.validate.custom = '';
-      component.validate.customPrivate = false;
-      component.validate.json = '';
-    }
-  }
-
-  private resetDependentSelects(parentKey: string) {
-    // Find all select components that depend on this one
-    const dependentComponents = this.formData.data.components.filter((comp: any) => 
-      comp.type === 'select' && 
-      comp.conditional?.json?.some((rule: { type: string; dependsOn: string }) => 
-        rule.type === 'filter' && rule.dependsOn === parentKey
-      )
-    );
-
-    // Reset each dependent select
-    dependentComponents.forEach((comp: any) => {
-      this.resetSelect(comp);
-      // Recursively reset components that depend on this one
-      this.resetDependentSelects(comp.key);
     });
   }
 
   initializeForm() {
     const group: any = {};
     
-    this.formData.data.components.forEach((component: any) => {
+    // First pass: create form controls
+    this.formData.data.components.forEach((component: FormComponent) => {
       if (component.type === 'button') return;
+
+      // Store original select options
+      if (component.type === 'select' && component.data?.values) {
+        this.originalSelectOptions[component.key] = [...component.data.values];
+      }
 
       this.fieldStates[component.key] = {
         hidden: false,
@@ -478,94 +334,67 @@ export class DynamicFormComponent implements OnInit {
         disabled: component.disabled || false
       };
 
-      let defaultValue = component.defaultValue || '';
-      let validators = [];
-
-      if (component.validate?.required) {
-        validators.push(Validators.required);
-      }
-
-      // Create form control configuration
       const controlConfig = {
-        value: defaultValue,
+        value: component.defaultValue || '',
         disabled: component.disabled || false
       };
 
-      switch (component.type) {
-        case 'checkbox':
-          controlConfig.value = component.defaultValue || false;
-          break;
-        case 'number':
-          if (component.validate?.min !== undefined) {
-            validators.push(Validators.min(component.validate.min));
-          }
-          if (component.validate?.max !== undefined) {
-            validators.push(Validators.max(component.validate.max));
-          }
-          break;
-        case 'datetime':
-          if (component.enableDate) {
-            group[component.key + '_date'] = new FormControl(
-              { value: '', disabled: component.disabled || false },
-              component.validate?.required ? [Validators.required] : []
-            );
-          }
-          if (component.enableTime) {
-            group[component.key + '_time'] = new FormControl(
-              { value: '', disabled: component.disabled || false },
-              component.validate?.required ? [Validators.required] : []
-            );
-          }
-          return;
-        case 'textfield':
-        case 'textarea':
-          if (component.validate?.minLength) {
-            validators.push(Validators.minLength(component.validate.minLength));
-          }
-          if (component.validate?.maxLength) {
-            validators.push(Validators.maxLength(component.validate.maxLength));
-          }
-          if (component.validate?.pattern) {
-            validators.push(Validators.pattern(component.validate.pattern));
-          }
-          break;
-        case 'file':
-          controlConfig.value = '';
-          break;
-      }
-
-      // Create form control with configuration and validators
-      group[component.key] = new FormControl(controlConfig, validators);
+      group[component.key] = new FormControl(controlConfig);
     });
 
     this.form = this.fb.group(group);
 
-    // Subscribe to individual form control value changes
+    // Second pass: set up value change subscriptions with debounce
     Object.keys(this.form.controls).forEach(key => {
       const control = this.form.get(key);
       if (control) {
-        control.valueChanges.subscribe(value => {
-          // Evaluate rules for all components that might depend on this field
-          this.formData.data.components.forEach((component: any) => {
-            if (component.conditional?.json) {
-              const dependsOnThisField = component.conditional.json.some(
-                (rule: any) => rule.dependsOn === key
-              );
-              if (dependsOnThisField) {
-                this.evaluateRules(component, this.form.value);
-              }
+        control.valueChanges
+          .pipe(debounceTime(100))
+          .subscribe(value => {
+            if (!this.isEvaluatingRules) {
+              this.handleFieldChange(key, value);
             }
           });
-        });
       }
     });
 
-    // Initial rule evaluation
-    this.formData.data.components.forEach((component: any) => {
-      if (component.conditional?.json) {
+    // Initial rule evaluation with delay
+    setTimeout(() => {
+      this.evaluateAllRules();
+    }, 0);
+  }
+
+  private handleFieldChange(changedField: string, value: any) {
+    this.isEvaluatingRules = true;
+    try {
+      // Reset dependent fields
+      this.ruleEngine.resetDependentFields(changedField, this.formData.data.components, this.form.value);
+
+      // Find components that depend on the changed field
+      const dependentComponents = this.formData.data.components.filter((component: FormComponent) =>
+        component.conditional?.json?.some(rule => rule.dependsOn === changedField)
+      );
+
+      // Evaluate rules for dependent components
+      dependentComponents.forEach((component: FormComponent) => {
         this.evaluateRules(component, this.form.value);
-      }
-    });
+      });
+    } finally {
+      this.isEvaluatingRules = false;
+    }
+  }
+
+  private evaluateAllRules() {
+    this.isEvaluatingRules = true;
+    try {
+      this.formData.data.components.forEach((component: FormComponent) => {
+        if (component.conditional?.json) {
+          this.evaluateRules(component, this.form.value);
+        }
+      });
+    } finally {
+      this.isEvaluatingRules = false;
+    }
   }
 
   onFileSelected(event: any, key: string) {
@@ -771,22 +600,33 @@ export class DynamicFormComponent implements OnInit {
     });
   }
 
-  evaluateRules(component: any, formValues: any) {
+  evaluateRules(component: FormComponent, formValues: any) {
     if (!component.conditional?.json?.length) {
       return;
     }
 
     // Map the conditional rules to our rule engine format
     const rules = component.conditional.json.map((rule: any) => {
-      // Handle empty string value specially for the 'eq' operator
-      const isEmptyCheck = rule.op === 'eq' && rule.value === '';
-      
+      if (rule.type === 'filter' && component.type === 'select') {
+        return {
+          type: rule.type,
+          conditions: [{
+            dependsOn: rule.dependsOn,
+            op: rule.op || 'eq',
+            value: rule.value,
+            compareOn: rule.compareOn
+          }],
+          value: this.originalSelectOptions[component.key]
+        };
+      }
+
       return {
-        type: rule.type, // 'hide', 'show', etc.
+        type: rule.type,
         conditions: [{
           dependsOn: rule.dependsOn,
           op: rule.op,
-          value: rule.value
+          value: rule.value,
+          compareOn: rule.compareOn
         }]
       };
     });
@@ -812,6 +652,11 @@ export class DynamicFormComponent implements OnInit {
       this.makeFieldRequired(component);
     } else if (ruleResults['optional']) {
       this.makeFieldOptional(component);
+    }
+
+    // Apply filter rules for select components
+    if (component.type === 'select' && Array.isArray(ruleResults['filteredOptions'])) {
+      this.updateSelectOptions(component, ruleResults['filteredOptions'] as any[]);
     }
   }
 
@@ -987,5 +832,16 @@ export class DynamicFormComponent implements OnInit {
     return options.filter((option: any) => 
       option.label.toLowerCase().includes(searchTerm)
     );
+  }
+
+  private updateSelectOptions(component: any, filteredOptions: any[]) {
+    // Update the component's data values with filtered options
+    component.data.values = filteredOptions;
+
+    // If the current selection is not in filtered options, reset the field
+    const currentValue = this.form.get(component.key)?.value;
+    if (currentValue && !filteredOptions.some(opt => opt.value === currentValue)) {
+      this.form.get(component.key)?.setValue('', { emitEvent: false });
+    }
   }
 }

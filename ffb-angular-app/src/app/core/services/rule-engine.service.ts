@@ -4,11 +4,19 @@ export interface Condition {
   dependsOn: string;
   op: string;
   value: any;
+  compareOn?: string;
 }
 
 export interface Rule {
   type: string;
   conditions: Condition[];
+  value?: SelectOption[];
+}
+
+export interface SelectOption {
+  value: any;
+  label: string;
+  relatedWith?: any;
 }
 
 @Injectable({
@@ -17,12 +25,16 @@ export interface Rule {
 export class RuleEngineService {
   constructor() { }
 
-  evaluateCondition(condition: Condition, formValues: any): boolean {
+  evaluateCondition(condition: Condition, formValues: any, ruleType?: string): boolean {
     const fieldValue = formValues[condition.dependsOn];
     
+    // Special handling for filter rules
+    if (ruleType === 'filter') {
+      return true; // Always evaluate filter rules, actual filtering happens in filterOptions
+    }
+
     // Special handling for empty string checks
     if (condition.op === 'eq' && condition.value === '') {
-      // Check if the field value is empty (empty string, null, or undefined)
       return !fieldValue && fieldValue !== 0;
     }
 
@@ -51,14 +63,15 @@ export class RuleEngineService {
     }
   }
 
-  evaluateRules(rules: Rule[], formValues: any): { [key: string]: boolean } {
-    const results: { [key: string]: boolean } = {
+  evaluateRules(rules: Rule[], formValues: any): { [key: string]: boolean | SelectOption[] } {
+    const results: { [key: string]: boolean | SelectOption[] } = {
       show: true,
       hide: false,
       enable: true,
       disable: false,
       required: false,
-      optional: true
+      optional: true,
+      filteredOptions: []
     };
 
     if (!rules || !rules.length) {
@@ -71,7 +84,7 @@ export class RuleEngineService {
       }
 
       const conditionsMet = rule.conditions.every(condition => 
-        this.evaluateCondition(condition, formValues)
+        this.evaluateCondition(condition, formValues, rule.type)
       );
 
       switch (rule.type) {
@@ -99,9 +112,45 @@ export class RuleEngineService {
           results['optional'] = conditionsMet;
           results['required'] = !conditionsMet;
           break;
+        case 'filter':
+          if (rule.conditions[0]) {
+            const dependentValue = formValues[rule.conditions[0].dependsOn];
+            results['filteredOptions'] = this.filterOptions(rule.value as SelectOption[], dependentValue);
+          }
+          break;
       }
     }
 
     return results;
+  }
+
+  filterOptions(options: SelectOption[], dependentValue: any): SelectOption[] {
+    if (!dependentValue && dependentValue !== 0) {
+      return options;
+    }
+
+    return options.filter(option => {
+      if (!option.value) {
+        return true; // Keep placeholder options
+      }
+      return option.relatedWith === dependentValue;
+    });
+  }
+
+  resetDependentFields(parentKey: string, allComponents: any[], formValues: any): void {
+    // Find all select components that depend on this one
+    const dependentComponents = allComponents.filter(comp => 
+      comp.type === 'select' && 
+      comp.conditional?.json?.some((rule: any) => 
+        rule.type === 'filter' && rule.dependsOn === parentKey
+      )
+    );
+
+    // Reset each dependent select
+    dependentComponents.forEach(comp => {
+      formValues[comp.key] = '';
+      // Recursively reset components that depend on this one
+      this.resetDependentFields(comp.key, allComponents, formValues);
+    });
   }
 }
