@@ -1,0 +1,28 @@
+<div class="dynamic-form-container">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="formData">
+    <div class="form-fields">
+      <ng-container *ngFor="let component of formData.data.components">
+        <div class="form-field" 
+             *ngIf="fieldStates[component.id]?.visible"
+             [class.disabled]="!fieldStates[component.id]?.enabled">
+          
+          <app-form-field
+            [component]="component"
+            [control]="form.get(component.id)"
+            [fieldState]="fieldStates[component.id]">
+          </app-form-field>
+
+          <div class="error-messages" *ngIf="fieldStates[component.id]?.errors?.length">
+            <div class="error-message" *ngFor="let error of fieldStates[component.id].errors">
+              {{ error }}
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="!form.valid">Submit</button>
+    </div>
+  </form>
+</div> 

@@ -1,0 +1,84 @@
+<div class="form-field-container" [ngClass]="{'has-error': showError}">
+  <label [for]="component.id" class="field-label">
+    {{ component.label }}
+    <span class="required-marker" *ngIf="component.required">*</span>
+  </label>
+
+  <ng-container [ngSwitch]="fieldType">
+    <!-- Text, Email, Number, Tel, URL inputs -->
+    <input *ngSwitchCase="'text'"
+           [type]="component.type"
+           [id]="component.id"
+           [formControl]="control"
+           [attr.disabled]="isDisabled"
+           class="form-control">
+
+    <input *ngSwitchCase="'email'"
+           type="email"
+           [id]="component.id"
+           [formControl]="control"
+           [attr.disabled]="isDisabled"
+           class="form-control">
+
+    <input *ngSwitchCase="'number'"
+           type="number"
+           [id]="component.id"
+           [formControl]="control"
+           [attr.disabled]="isDisabled"
+           class="form-control">
+
+    <!-- Textarea -->
+    <textarea *ngSwitchCase="'textarea'"
+              [id]="component.id"
+              [formControl]="control"
+              [attr.disabled]="isDisabled"
+              class="form-control textarea">
+    </textarea>
+
+    <!-- Select -->
+    <select *ngSwitchCase="'select'"
+            [id]="component.id"
+            [formControl]="control"
+            [attr.disabled]="isDisabled"
+            class="form-control">
+      <option value="">Select an option</option>
+      <option *ngFor="let option of component.options"
+              [value]="option.value">
+        {{ option.label }}
+      </option>
+    </select>
+
+    <!-- Radio -->
+    <div *ngSwitchCase="'radio'" class="radio-group">
+      <div *ngFor="let option of component.options" class="radio-option">
+        <input type="radio"
+               [id]="component.id + '_' + option.value"
+               [formControl]="control"
+               [value]="option.value"
+               [attr.disabled]="isDisabled">
+        <label [for]="component.id + '_' + option.value">
+          {{ option.label }}
+        </label>
+      </div>
+    </div>
+
+    <!-- Checkbox -->
+    <div *ngSwitchCase="'checkbox'" class="checkbox-field">
+      <input type="checkbox"
+             [id]="component.id"
+             [formControl]="control"
+             [attr.disabled]="isDisabled">
+      <label [for]="component.id">
+        {{ component.label }}
+      </label>
+    </div>
+
+    <!-- Default text input -->
+    <input *ngSwitchDefault
+           type="text"
+           [id]="component.id"
+           [formControl]="control"
+           [attr.disabled]="isDisabled"
+           class="form-control">
+  </ng-container>
+</div> 

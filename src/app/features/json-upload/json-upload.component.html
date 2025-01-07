@@ -1,0 +1,15 @@
+<div class="json-upload-container">
+  <div class="upload-box">
+    <h2>Upload JSON Form Configuration</h2>
+    <div class="upload-area">
+      <input type="file" 
+             accept=".json"
+             (change)="onFileSelected($event)"
+             #fileInput
+             class="file-input">
+      <label for="fileInput" class="upload-label">
+        Choose a JSON file or drag it here
+      </label>
+    </div>
+  </div>
+</div> 

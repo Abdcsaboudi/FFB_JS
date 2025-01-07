@@ -1,0 +1,18 @@
+<div class="json-upload-container">
+  <h2>JSON File Upload</h2>
+  <div class="upload-section">
+    <input type="file" 
+           accept=".json" 
+           (change)="onFileSelected($event)" 
+           #fileInput
+           class="file-input">
+    <button (click)="uploadFile()" 
+            [disabled]="!selectedFile" 
+            class="upload-button">
+      Upload JSON
+    </button>
+  </div>
+  <div class="file-info" *ngIf="selectedFile">
+    Selected file: {{ selectedFile.name }}
+  </div>
+</div>
