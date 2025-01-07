@@ -63,7 +63,7 @@ export class RuleEngineService {
     }
   }
 
-  evaluateRules(rules: Rule[], formValues: any): { [key: string]: boolean | SelectOption[] } {
+  evaluateRules(rules: Rule[], formValues: any, allComponents?: any[], currentKey?: string): { [key: string]: boolean | SelectOption[] } {
     const results: { [key: string]: boolean | SelectOption[] } = {
       show: true,
       hide: false,
@@ -115,7 +115,13 @@ export class RuleEngineService {
         case 'filter':
           if (rule.conditions[0]) {
             const dependentValue = formValues[rule.conditions[0].dependsOn];
-            results['filteredOptions'] = this.filterOptions(rule.value as SelectOption[], dependentValue);
+            results['filteredOptions'] = this.filterOptions(
+              rule.value as SelectOption[], 
+              dependentValue,
+              allComponents,
+              formValues,
+              currentKey
+            );
           }
           break;
       }
@@ -124,9 +130,40 @@ export class RuleEngineService {
     return results;
   }
 
-  filterOptions(options: SelectOption[], dependentValue: any): SelectOption[] {
+  filterOptions(options: SelectOption[], dependentValue: any, allComponents?: any[], formValues?: any, currentKey?: string): SelectOption[] {
+    // If parent value is empty/null/undefined, return empty array
     if (!dependentValue && dependentValue !== 0) {
-      return options;
+      return [];
+    }
+
+    // If we have the full context, check the entire dependency chain
+    if (allComponents && formValues && currentKey) {
+      // Find the current component's dependencies
+      const currentComponent = allComponents.find(comp => comp.key === currentKey);
+      if (currentComponent) {
+        // Check if any parent in the chain is empty
+        let parentKey = currentComponent.conditional?.json?.[0]?.dependsOn;
+        while (parentKey) {
+          const parentValue = formValues[parentKey];
+          if (!parentValue && parentValue !== 0) {
+            return []; // Return empty if any parent is empty
+          }
+
+          // Get the parent component
+          const parentComponent = allComponents.find(comp => comp.key === parentKey);
+          if (parentComponent?.type === 'select') {
+            // Check if the parent value exists in any relatedWith values
+            const parentOptions = parentComponent.data?.values || [];
+            const validParentValue = parentOptions.some((opt: SelectOption) => opt.value === parentValue);
+            if (!validParentValue) {
+              return []; // Return empty if parent value is not valid
+            }
+          }
+
+          // Move to next parent in chain
+          parentKey = parentComponent?.conditional?.json?.[0]?.dependsOn;
+        }
+      }
     }
 
     return options.filter(option => {

@@ -367,21 +367,53 @@ export class DynamicFormComponent implements OnInit {
   private handleFieldChange(changedField: string, value: any) {
     this.isEvaluatingRules = true;
     try {
-      // Reset dependent fields
-      this.ruleEngine.resetDependentFields(changedField, this.formData.data.components, this.form.value);
+      // Get all dependent fields in the chain
+      const allDependentFields = this.getAllDependentFields(changedField);
+      
+      // Reset all dependent fields that have filter rules
+      allDependentFields.forEach(field => {
+        const hasFilterRule = field.conditional?.json?.some(rule => rule.type === 'filter' && rule.dependsOn === changedField);
+        if (hasFilterRule) {
+          const control = this.form.get(field.key);
+          if (control) {
+            // Reset the form control value
+            control.setValue('', { emitEvent: true });  // This will trigger valueChanges for cascading resets
+          }
+        }
+      });
 
-      // Find components that depend on the changed field
-      const dependentComponents = this.formData.data.components.filter((component: FormComponent) =>
+      // Then evaluate rules for the changed field's dependents
+      const directDependents = this.formData.data.components.filter((component: FormComponent) =>
         component.conditional?.json?.some(rule => rule.dependsOn === changedField)
       );
 
-      // Evaluate rules for dependent components
-      dependentComponents.forEach((component: FormComponent) => {
+      directDependents.forEach((component: FormComponent) => {
         this.evaluateRules(component, this.form.value);
       });
     } finally {
       this.isEvaluatingRules = false;
     }
+  }
+
+  private getAllDependentFields(parentKey: string, processed: Set<string> = new Set()): FormComponent[] {
+    if (processed.has(parentKey)) {
+      return [];
+    }
+    processed.add(parentKey);
+
+    // Find immediate dependents
+    const directDependents = this.formData.data.components.filter((component: FormComponent) =>
+      component.conditional?.json?.some(rule => rule.dependsOn === parentKey)
+    );
+
+    // Get all nested dependents
+    const allDependents = [...directDependents];
+    directDependents.forEach((component: FormComponent) => {
+      const nestedDependents = this.getAllDependentFields(component.key, processed);
+      allDependents.push(...nestedDependents);
+    });
+
+    return allDependents;
   }
 
   private evaluateAllRules() {
@@ -631,7 +663,12 @@ export class DynamicFormComponent implements OnInit {
       };
     });
 
-    const ruleResults = this.ruleEngine.evaluateRules(rules, formValues);
+    const ruleResults = this.ruleEngine.evaluateRules(
+      rules, 
+      formValues,
+      this.formData.data.components,
+      component.key
+    );
 
     // Apply visibility rules
     if (ruleResults['hide']) {
