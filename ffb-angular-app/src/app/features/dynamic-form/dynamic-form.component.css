@@ -177,14 +177,24 @@ select.form-control {
 
 .datetime-wrapper {
   display: flex;
+  gap: 1rem;
   width: 100%;
 }
 
-.date-group {
+.date-group,
+.time-group {
+  flex: 1;
+  min-width: 0;
+}
+
+.date-group .form-control,
+.time-group .form-control {
   width: 100%;
 }
 
-.date-group .form-control {
+/* Ensure proper spacing when only one input is shown */
+.datetime-wrapper:not(:has(.time-group)) .date-group,
+.datetime-wrapper:not(:has(.date-group)) .time-group {
   width: 100%;
 }
 
@@ -362,6 +372,11 @@ input[type="date"] {
 
   .back-button {
     max-width: 100%;
+  }
+
+  .date-group,
+  .time-group {
+    width: 100%;
   }
 }
 

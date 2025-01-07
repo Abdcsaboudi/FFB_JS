@@ -1,0 +1,440 @@
+{
+  "statusCode": 200,
+  "data": {
+    "components": [
+      {
+        "id": "personalInfo",
+        "type": "fieldset",
+        "label": "Personal Information",
+        "visible": true,
+        "enabled": true,
+        "components": [
+          {
+            "id": "textField1",
+            "type": "text",
+            "label": "Full Name",
+            "value": "",
+            "required": true,
+            "validations": [
+              {
+                "type": "required",
+                "message": "Full name is required"
+              },
+              {
+                "type": "minLength",
+                "value": 3,
+                "message": "Name must be at least 3 characters long"
+              },
+              {
+                "type": "maxLength",
+                "value": 50,
+                "message": "Name cannot exceed 50 characters"
+              }
+            ],
+            "visible": true,
+            "enabled": true
+          },
+          {
+            "id": "email1",
+            "type": "email",
+            "label": "Email Address",
+            "value": "",
+            "required": true,
+            "validations": [
+              {
+                "type": "required",
+                "message": "Email is required"
+              },
+              {
+                "type": "email",
+                "message": "Please enter a valid email address"
+              }
+            ],
+            "visible": true,
+            "enabled": true
+          },
+          {
+            "id": "number1",
+            "type": "number",
+            "label": "Age",
+            "value": "",
+            "required": true,
+            "validations": [
+              {
+                "type": "required",
+                "message": "Age is required"
+              },
+              {
+                "type": "min",
+                "value": 18,
+                "message": "Must be at least 18 years old"
+              },
+              {
+                "type": "max",
+                "value": 100,
+                "message": "Age cannot exceed 100"
+              }
+            ],
+            "visible": true,
+            "enabled": true,
+            "rules": [
+              {
+                "condition": "number1.value >= 65",
+                "action": "show",
+                "targetField": "seniorInfo"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "seniorInfo",
+        "type": "fieldset",
+        "label": "Senior Citizen Information",
+        "visible": false,
+        "enabled": true,
+        "components": [
+          {
+            "id": "seniorId",
+            "type": "text",
+            "label": "Senior Citizen ID",
+            "value": "",
+            "required": true,
+            "visible": true,
+            "enabled": true,
+            "validations": [
+              {
+                "type": "required",
+                "message": "Senior Citizen ID is required"
+              },
+              {
+                "type": "pattern",
+                "value": "^SC-[0-9]{6}$",
+                "message": "Invalid Senior Citizen ID format (e.g., SC-123456)"
+              }
+            ]
+          },
+          {
+            "id": "seniorBenefits",
+            "type": "checkbox",
+            "label": "Apply for Senior Benefits",
+            "value": false,
+            "visible": true,
+            "enabled": true
+          }
+        ]
+      },
+      {
+        "id": "addressInfo",
+        "type": "fieldset",
+        "label": "Address Information",
+        "visible": true,
+        "enabled": true,
+        "components": [
+          {
+            "id": "select1",
+            "type": "select",
+            "label": "Country",
+            "value": "",
+            "required": true,
+            "options": [
+              {
+                "label": "United States",
+                "value": "us"
+              },
+              {
+                "label": "Canada",
+                "value": "ca"
+              },
+              {
+                "label": "United Kingdom",
+                "value": "uk"
+              }
+            ],
+            "validations": [
+              {
+                "type": "required",
+                "message": "Please select a country"
+              }
+            ],
+            "visible": true,
+            "enabled": true
+          },
+          {
+            "id": "select2",
+            "type": "select",
+            "label": "State/Province",
+            "value": "",
+            "required": true,
+            "options": [],
+            "validations": [
+              {
+                "type": "required",
+                "message": "Please select a state/province"
+              }
+            ],
+            "visible": false,
+            "enabled": true,
+            "rules": [
+              {
+                "condition": "select1.value === 'us'",
+                "action": "show",
+                "targetField": "select2",
+                "options": [
+                  {
+                    "label": "New York",
+                    "value": "ny"
+                  },
+                  {
+                    "label": "California",
+                    "value": "ca"
+                  },
+                  {
+                    "label": "Texas",
+                    "value": "tx"
+                  }
+                ]
+              },
+              {
+                "condition": "select1.value === 'ca'",
+                "action": "show",
+                "targetField": "select2",
+                "options": [
+                  {
+                    "label": "Ontario",
+                    "value": "on"
+                  },
+                  {
+                    "label": "Quebec",
+                    "value": "qc"
+                  },
+                  {
+                    "label": "British Columbia",
+                    "value": "bc"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "citySelect",
+            "type": "select",
+            "label": "City",
+            "value": "",
+            "required": true,
+            "options": [],
+            "visible": false,
+            "enabled": true,
+            "rules": [
+              {
+                "condition": "select2.value === 'ny'",
+                "action": "show",
+                "targetField": "citySelect",
+                "options": [
+                  {
+                    "label": "New York City",
+                    "value": "nyc"
+                  },
+                  {
+                    "label": "Buffalo",
+                    "value": "buffalo"
+                  }
+                ]
+              },
+              {
+                "condition": "select2.value === 'ca'",
+                "action": "show",
+                "targetField": "citySelect",
+                "options": [
+                  {
+                    "label": "Los Angeles",
+                    "value": "la"
+                  },
+                  {
+                    "label": "San Francisco",
+                    "value": "sf"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "contactPreferences",
+        "type": "fieldset",
+        "label": "Contact Preferences",
+        "visible": true,
+        "enabled": true,
+        "components": [
+          {
+            "id": "preferredContact",
+            "type": "radio",
+            "label": "Preferred Contact Method",
+            "value": "",
+            "required": true,
+            "options": [
+              {
+                "label": "Email",
+                "value": "email"
+              },
+              {
+                "label": "Phone",
+                "value": "phone"
+              },
+              {
+                "label": "Mail",
+                "value": "mail"
+              }
+            ],
+            "visible": true,
+            "enabled": true
+          },
+          {
+            "id": "tel1",
+            "type": "tel",
+            "label": "Phone Number",
+            "value": "",
+            "required": true,
+            "validations": [
+              {
+                "type": "required",
+                "message": "Phone number is required"
+              },
+              {
+                "type": "pattern",
+                "value": "^[+]?[(]?[0-9]{3}[)]?[-\\s.]?[0-9]{3}[-\\s.]?[0-9]{4}$",
+                "message": "Please enter a valid phone number"
+              }
+            ],
+            "visible": false,
+            "enabled": true,
+            "rules": [
+              {
+                "condition": "preferredContact.value === 'phone'",
+                "action": "show",
+                "targetField": "tel1"
+              }
+            ]
+          },
+          {
+            "id": "contactTime",
+            "type": "select",
+            "label": "Preferred Contact Time",
+            "value": "",
+            "required": true,
+            "options": [
+              {
+                "label": "Morning",
+                "value": "morning"
+              },
+              {
+                "label": "Afternoon",
+                "value": "afternoon"
+              },
+              {
+                "label": "Evening",
+                "value": "evening"
+              }
+            ],
+            "visible": false,
+            "enabled": true,
+            "rules": [
+              {
+                "condition": "preferredContact.value === 'phone'",
+                "action": "show",
+                "targetField": "contactTime"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "subscriptionInfo",
+        "type": "fieldset",
+        "label": "Subscription Information",
+        "visible": true,
+        "enabled": true,
+        "components": [
+          {
+            "id": "checkbox1",
+            "type": "checkbox",
+            "label": "Subscribe to newsletter",
+            "value": false,
+            "visible": true,
+            "enabled": true
+          },
+          {
+            "id": "newsletterType",
+            "type": "select",
+            "label": "Newsletter Type",
+            "value": "",
+            "required": true,
+            "options": [
+              {
+                "label": "Daily Digest",
+                "value": "daily"
+              },
+              {
+                "label": "Weekly Summary",
+                "value": "weekly"
+              },
+              {
+                "label": "Monthly Report",
+                "value": "monthly"
+              }
+            ],
+            "visible": false,
+            "enabled": true,
+            "rules": [
+              {
+                "condition": "checkbox1.value === true",
+                "action": "show",
+                "targetField": "newsletterType"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "termsSection",
+        "type": "fieldset",
+        "label": "Terms and Conditions",
+        "visible": true,
+        "enabled": true,
+        "components": [
+          {
+            "id": "checkbox2",
+            "type": "checkbox",
+            "label": "Accept terms and conditions",
+            "value": false,
+            "required": true,
+            "validations": [
+              {
+                "type": "required",
+                "message": "You must accept the terms and conditions"
+              }
+            ],
+            "visible": true,
+            "enabled": true
+          }
+        ]
+      },
+      {
+        "id": "submit",
+        "type": "button",
+        "label": "Submit",
+        "theme": "primary",
+        "block": true,
+        "enabled": true,
+        "rules": [
+          {
+            "condition": "checkbox2.value === true",
+            "action": "enable",
+            "targetField": "submit"
+          }
+        ]
+      }
+    ]
+  }
+} 

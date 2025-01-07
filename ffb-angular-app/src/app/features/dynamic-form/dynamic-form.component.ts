@@ -72,12 +72,23 @@ import { Router } from '@angular/router';
 
               <!-- DateTime Input -->
               <div *ngIf="component.type === 'datetime'" class="datetime-wrapper">
-                <div class="date-group">
+                <!-- Date Picker -->
+                <div class="date-group" *ngIf="component.enableDate">
                   <input type="date"
-                         [id]="component.key"
-                         [formControlName]="component.key"
+                         [id]="component.key + '_date'"
+                         [formControlName]="component.key + '_date'"
                          class="form-control"
-                         [class.invalid]="shouldShowError(component.key)"
+                         [class.invalid]="shouldShowError(component.key + '_date')"
+                         #inputField>
+                </div>
+
+                <!-- Time Picker -->
+                <div class="time-group" *ngIf="component.enableTime">
+                  <input type="time"
+                         [id]="component.key + '_time'"
+                         [formControlName]="component.key + '_time'"
+                         class="form-control"
+                         [class.invalid]="shouldShowError(component.key + '_time')"
                          #inputField>
                 </div>
               </div>
@@ -265,6 +276,17 @@ export class DynamicFormComponent implements OnInit {
             validators.push(Validators.max(component.validate.max));
           }
           break;
+        case 'datetime':
+          // Only add date control if enabled
+          if (component.enableDate) {
+            group[component.key + '_date'] = ['', component.validate?.required ? [Validators.required] : []];
+          }
+          // Only add time control if enabled
+          if (component.enableTime) {
+            group[component.key + '_time'] = ['', component.validate?.required ? [Validators.required] : []];
+          }
+          // Skip the rest of the switch for datetime
+          return;
         case 'textfield':
         case 'textarea':
           if (component.validate?.minLength) {
@@ -435,5 +457,18 @@ export class DynamicFormComponent implements OnInit {
       this.form.get(key)?.setValue(file.name);
       this.form.get(key)?.markAsTouched();
     }
+  }
+
+  formatDateTime(component: any, formValue: any): string {
+    if (!component.enableDate && !component.enableTime) return '';
+    
+    let parts = [];
+    if (component.enableDate && formValue[component.key + '_date']) {
+      parts.push(formValue[component.key + '_date']);
+    }
+    if (component.enableTime && formValue[component.key + '_time']) {
+      parts.push(formValue[component.key + '_time']);
+    }
+    return parts.join(' ');
   }
 }
