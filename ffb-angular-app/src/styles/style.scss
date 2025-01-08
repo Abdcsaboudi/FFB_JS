@@ -369,7 +369,7 @@ body {
 .btn {
   padding: 12px 24px;
   font-size: 14px;
-  font-family: var(--contentFontBold) !important;
+  font-family: 'FSAlbert-Regular' !important;
   border-radius: 4px;
   line-height: 20px;
   border: 0 !important;
@@ -576,24 +576,23 @@ input classes
   border: 1px solid #CCCCCC;
   border-radius: 4px;
   padding: 12px;
+  font-family: 'FSAlbert-Regular' !important;
   @extend .bodyBoldM;
   color: #000B25;
 
   &:hover {
     border-color: var(--int-primary-hover);
-
   }
 
   &:focus {
     outline: 1px solid var(--int-primary-focus) !important;
-    // border-color: var( --int-primary-default);
   }
 
   &::placeholder {
     color: rgba(0, 11, 37, 0.57);
+    font-family: 'FSAlbert-Regular' !important;
     @extend .bodyRegularM
   }
-
 }
 
 .otp-input-design {
@@ -601,7 +600,7 @@ input classes
   border: 1px solid #CCCCCC !important;
   border-radius: 4px !important;
   padding: 12px !important;
-  font-family: var(--contentFontBold) !important;
+  font-family: 'FSAlbert-Regular' !important;
   font-size: 17px !important;
   line-height: 24px !important;
   color: #000B25 !important;
@@ -611,7 +610,6 @@ input classes
 
   &:hover {
     border-color: var(--int-primary-hover) !important;
-
   }
 
   &:focus {
@@ -625,25 +623,24 @@ input classes
     border: 1px solid #CCCCCC;
     border-radius: 4px;
     padding: 12px;
+    font-family: 'FSAlbert-Regular' !important;
     @extend .bodyBoldM;
     color: #000B25;
     width: 100%;
 
     &:hover {
       border-color: var(--int-primary-hover);
-
     }
 
     &:focus {
       outline: 1px solid var(--int-primary-focus) !important;
-      // border-color: var( --int-primary-default);
     }
 
     &::placeholder {
       color: rgba(0, 11, 37, 0.57);
+      font-family: 'FSAlbert-Regular' !important;
       @extend .bodyRegularM
     }
-
   }
 }
 
@@ -707,6 +704,10 @@ input classes
 
   input[type="checkbox"]:checked:after {
     display: block;
+  }
+
+  label {
+    font-family: 'FSAlbert-Regular' !important;
   }
 }
 
@@ -1132,14 +1133,14 @@ fieldset:disabled .btn {
   .info-requested-input {
     textarea {
       color: var(--black-100);
-      font-family: var(--contentFont);
+      font-family: 'FSAlbert-Regular' !important;
       font-size: 17px;
       font-weight: 700;
     }
 
     label {
       color: var(--black-64);
-      font-family: var(--contentFont);
+      font-family: 'FSAlbert-Regular' !important;
       font-size: 13px;
       font-weight: 400;
       margin-bottom: 0.5rem;
@@ -1220,4 +1221,115 @@ fieldset:disabled .btn {
   right: unset !important;
   left: -1rem;
 
+}
+
+// Titles
+.headLineRegular,
+.headLineBold,
+.titleRegular,
+.titleBold,
+.subTitle,
+.subheadingRegular,
+.subheadingBlod,
+.bodyRegularS,
+.bodyRegularM,
+.bodyRegularL,
+.bodyBoldS,
+.bodyBoldM,
+.bodyBoldL,
+.captionRegular,
+.captionBold,
+.subtext {
+  font-family: 'FSAlbert-Regular' !important;
+}
+
+// Dialog styles
+.p-dialog-title,
+.p-dialog-content,
+.p-dialog-footer {
+  font-family: 'FSAlbert-Regular' !important;
+}
+
+// Select and Dropdown
+.p-dropdown,
+.p-dropdown-label,
+.p-dropdown-item,
+select,
+option {
+  font-family: 'FSAlbert-Regular' !important;
+}
+
+// Date and Time pickers
+.p-calendar,
+.p-datepicker,
+.p-timepicker,
+input[type="date"],
+input[type="time"] {
+  font-family: 'FSAlbert-Regular' !important;
+}
+
+// Text areas
+textarea {
+  font-family: 'FSAlbert-Regular' !important;
+}
+
+// Radio buttons and Checkboxes
+.p-radiobutton-label,
+.p-checkbox-label,
+input[type="radio"] + label,
+input[type="checkbox"] + label {
+  font-family: 'FSAlbert-Regular' !important;
+}
+
+// Attachments
+.attachment-label,
+.file-name,
+.file-size {
+  font-family: 'FSAlbert-Regular' !important;
+}
+
+// Buttons (additional to existing styles)
+button,
+.p-button,
+.p-button-label {
+  font-family: 'FSAlbert-Regular' !important;
+}
+
+// Messages and Alerts
+.p-message,
+.p-toast-message,
+.alert {
+  font-family: 'FSAlbert-Regular' !important;
+}
+
+// Headers and Labels
+h1, h2, h3, h4, h5, h6,
+label,
+.label {
+  font-family: 'FSAlbert-Regular' !important;
+}
+
+// Update existing content classes
+.black-black-100-content,
+.black-black-100-content-15,
+.accent-accent-500-content,
+.accent-accent-500-mainFontBold,
+.black-black-64-contentFont {
+  font-family: 'FSAlbert-Regular' !important;
+}
+
+// Modal content
+.message-with-input-modal {
+  .header-message,
+  .confirm-title,
+  .info-requested-input textarea,
+  .info-requested-input label {
+    font-family: 'FSAlbert-Regular' !important;
+  }
+}
+
+// Error messages
+.error,
+.validation-message {
+  font-family: 'FSAlbert-Regular' !important;
 }
