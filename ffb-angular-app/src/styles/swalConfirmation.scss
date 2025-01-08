@@ -1,0 +1,107 @@
+::ng-deep .swal2-container {
+  .swal2-popup {
+    .swal2-icon {
+      border: unset;
+
+    }
+    .swal2-html-container{
+      p{
+        margin: 0;
+      }
+    }
+    .noteSection{
+      display: flex;
+      flex-flow: column;
+      gap: 8px;
+      width: 100%;
+      justify-content: flex-start;
+      .title{
+        font-family: var(--contentFontBold);
+        font-size: 12px;
+        line-height: 16px;
+        color: rgba(0, 11, 37, 0.64);
+        align-self: flex-start;
+        max-height: 114px;
+        margin: 0;
+      }
+      .textarea{
+        background: #FFFFFF;
+        border: 1px solid #CCCCCC;
+        border-radius: 4px;
+      }
+      #note{
+        font-family: var(--contentFontBold);
+        font-size: 17px;
+        line-height: 24px;
+        color: #000B25;
+      }
+    }
+    .customSwalTitle {
+      font-family: var(--contentFont);
+      font-size: 20px;
+      line-height: 20px;
+      text-align: center;
+      color: #0079B8;
+      padding: 0;
+    }
+
+    .customSwalTitleSuccess {
+      font-family: var(--contentFont);
+      font-size: 15px;
+      line-height: 20px;
+      text-align: center;
+      color: #49D16F;
+    }
+
+    .customSwalTitleError {
+      font-family: var(--contentFont);
+      font-size: 15px;
+      line-height: 20px;
+      text-align: center;
+      color: #F02B02;
+    }
+
+    .customSwalContainer {
+      font-family: var(--contentFont);
+      font-size: 20px;
+      line-height: 30px;
+      text-align: center;
+      color: #000B25;
+      padding: 0px 16px;
+      margin-bottom: 16px;
+    }
+
+
+    .swal2-actions {
+      width: 100%;
+      display: flex;
+      gap:1rem;
+      flex-flow: row;
+      padding: 0 22px;
+      .swal2-confirm {
+        background: var(--gradient-primary);
+        border-radius: 4px;
+        width: 100%;
+        padding: 16px 24px;
+        border: var(--border) !important;
+      }
+
+      .swal2-cancel {
+        border-radius: 4px;
+        border: var(--border) !important;
+        background-color: var(--white-100) !important;
+        color: var(--int-primary-hover);
+        width: 100%;
+        padding: 16px 24px;
+        &:hover{
+          cursor: pointer;
+          color: var(--int-primary-hover)
+        }
+        &:focus,
+        &:active {
+          color: var( --int-primary-pressed)
+        }
+      }
+    }
+  }
+}

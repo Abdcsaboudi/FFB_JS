@@ -1,0 +1,9 @@
+
+
+::ng-deep [dir="rtl"] .search-input-design-in-dev{
+
+  &::after {
+    right: unset;
+    left: 14px;
+  }
+}

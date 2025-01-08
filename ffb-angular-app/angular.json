@@ -27,7 +27,14 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles/style.scss",
+              "src/styles/primeNg.scss",
+              "src/styles/inputDesign.scss",
+              "src/styles/calendar.scss",
+              "src/styles/basePTableStyle.scss",
+              "src/styles/angularMaterial.scss",
+              "src/styles/direction.style.scss",
+              "src/styles/dx.material.custom-scheme.css"
             ],
             "scripts": []
           },

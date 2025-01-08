@@ -1,0 +1,23 @@
+::ng-deep .swal2-container {
+  .swal2-popup {
+    .swal2-icon {
+      border: unset;
+    }
+  }
+
+  .customSwalTitleSuccess {
+    font-family: var(--contentFont);
+    font-size: 15px;
+    line-height: 20px;
+    text-align: center;
+    color: #49D16F;
+  }
+
+  .customSwalTitleError {
+    font-family: var(--contentFont);
+    font-size: 15px;
+    line-height: 20px;
+    text-align: center;
+    color: #F02B02;
+  }
+}

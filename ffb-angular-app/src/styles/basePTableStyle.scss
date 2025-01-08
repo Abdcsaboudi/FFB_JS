@@ -1,0 +1,48 @@
+::ng-deep .p-datatable {
+  .p-datatable-thead {
+    .header-item {
+      background: var(--white-100);
+      &:first-child{
+        border-radius: 8px 0 0 0;
+      }
+      &:last-child{
+        border-radius: 0 8px 0 0;
+      }
+    }
+  }
+
+  .p-datatable-tbody {
+    .table-body{
+      &:last-child{
+        td{
+          border: unset;
+          &:first-child{
+            border-radius: 0 0 0 8px;
+          }
+          &:last-child{
+            border-radius: 0 0 8px 0;
+          }
+        }
+      }
+    }
+  }
+
+  .p-paginator-bottom {
+    border-width: 0 0 1px 0;
+    border-radius: 0;
+    background: transparent;
+    border: unset;
+    justify-content: flex-end;
+    padding: 0.5rem 0;
+
+
+    .p-paginator-current {
+      margin-inline-end: auto;
+      font-family: var(--contentFontBold);
+      font-size: 14px;
+      line-height: 20px;
+      color: rgba(0, 11, 37, 0.64);
+      padding-inline-start: 0;
+    }
+  }
+}

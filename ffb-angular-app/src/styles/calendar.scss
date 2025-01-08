@@ -1,0 +1,102 @@
+ngb-datepicker{
+  border: unset;
+  display: flex;
+  flex-flow: column;
+  gap: 1.5rem;
+}
+
+::ng-deep .ngb-dp-arrow{
+  align-items: center;
+}
+
+::ng-deep ngb-datepicker.dropdown-menu.show {
+  direction: ltr;
+}
+
+::ng-deep .ngb-dp-header{
+  background-color: transparent !important;
+  margin-bottom: unset;
+
+}
+::ng-deep .form-select{
+  border: unset;
+  color: var(--int-primary-default);
+}
+::ng-deep.ngb-dp-week.ngb-dp-weekdays{
+  border: unset;
+  background-color: transparent;
+}
+::ng-deep .ngb-dp-weekday.small{
+  font-style: normal;
+  font-family: var(--contentFontBold);
+  color: var(--black-64);
+  font-size: 15px;
+  line-height: 20px;
+}
+
+::ng-deep .bg-primary{
+  background-color: var(--int-primary-default) !important;
+}
+
+::ng-deep .ngb-dp-months{
+  order: 3;
+}
+
+
+::ng-deep .ngb-dp-day,
+::ng-deep .ngb-dp-weekday,
+::ng-deep .ngb-dp-week-number {
+  width: 2.3rem !important;
+  height: 2.3rem !important;
+}
+
+::ng-deep .ngb-dp-day.hidden{
+  display: none;
+}
+
+.dp-hidden {
+  width: 0;
+  margin: 0;
+  border: none;
+  padding: 0;
+}
+
+.custom-day {
+  text-align: center;
+  padding: 0.185rem 0.25rem;
+  display: inline-block;
+  height: 2rem;
+  width: 100%;
+  font-family: var(--contentFont);
+  color: var(--black-64);
+  font-size: 15px;
+  line-height: 20px;
+}
+.custom-day.focused {
+  background-color: #e6e6e6;
+}
+
+.custom-day.range,
+.custom-day:hover {
+  background-color: var(--int-primary-default);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.custom-day.faded {
+  background-color: var(--int-primary-default);
+}
+.select-btns{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  order: 2;
+  gap: 1rem;
+
+  >*{
+    width: 100%;
+    flex: 1;
+    text-wrap: nowrap;
+  }
+}
